@@ -26,7 +26,7 @@ jobs:
     - name: Build the Docker image 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file kundeapi/Dockerfile --tag ${DOCKER_USER}/kundeapi:latest-dev
+      run: docker build . --file KundeApi/dockerfile --tag ${DOCKER_USER}/kundeapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
