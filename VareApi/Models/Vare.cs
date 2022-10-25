@@ -8,5 +8,5 @@ public class Vare
     public int showRoomid { get; set; }
     public double valuation { get; set; }
     public string auktionStart  { get; set; }
-    public string[] images { get; set; }
+    public string images { get; set; }
     }
