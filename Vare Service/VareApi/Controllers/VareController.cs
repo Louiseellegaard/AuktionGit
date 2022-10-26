@@ -29,16 +29,17 @@ namespace VareApi.Controllers
 
         // GET api/vare/5
         [HttpGet("{id}")]
-        public string Get(string id)
+        public Vare Get(string id)
         {
-            throw new NotImplementedException();
+            var productId = _dataService.GetById(id);
+            return productId;
         }
 
         // POST api/vare
         [HttpPost]
         public void Post(Vare vare)
         {
-            throw new NotImplementedException();
+           _dataService.Create(vare);
         }
 
         // PUT api/vare/5
