@@ -42,10 +42,10 @@ namespace VareApi.Controllers
         }
 
         // PUT api/vare/5
-        [HttpPut("{id}")]
-        public void Put(string id)
+        [HttpPut]
+        public void Put(Vare vare)
         {
-            throw new NotImplementedException();
+            _dataService.Update(vare);
         }
 
         // DELETE api/vare/5

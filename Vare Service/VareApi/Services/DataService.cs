@@ -9,6 +9,7 @@ namespace VareApi.Services
         IEnumerable<Vare> GetAll();
         Vare GetById(string id);
         string Create(Vare vare);
+        void Update(Vare vare);
     }
 
     public class DataService : IDataService
@@ -67,19 +68,15 @@ namespace VareApi.Services
 
         public string Create(Vare vare)
         {
-            //var vare = new Vare()
-            //{
-            //    productId = productId,
-            //    title = title,
-            //    description = description,
-            //    showRoomid = showRoomid,
-            //    valuation = valuation,
-            //    auktionStart = auktionStart,
-            //    images = images
-            //};
-
             data.Add(vare);
             return JsonSerializer.Serialize(new { msg = "Ny vare oprettet", newVare = vare });
+        }
+         public void Update (Vare vare)
+        {
+            int update = data
+            .FindIndex(v => v.ProductId == vare.ProductId)!;
+            data.RemoveAt(update);
+            data.Add(vare);
         }
     }
 }
