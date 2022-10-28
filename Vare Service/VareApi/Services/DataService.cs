@@ -1,21 +1,23 @@
 ﻿using System.Text.Json;
 using VareApi.Controllers;
 using VareApi.Models;
+using Auktion.Services.Vareapi;
+using MongoDB.Driver;
 
 namespace VareApi.Services
 {
     public interface IDataService
     {
-        IEnumerable<Vare> GetAll();
+        Task<IEnumerable<Vare>> GetAll();
         Vare GetById(string id);
-        string Create(Vare vare);
+        Task<string>Create(Vare vare);
         void Update(Vare vare);
     }
 
     public class DataService : IDataService
     {
         private static List<Vare> data;
-
+        private readonly dbcontext _db = new dbcontext();
         public DataService()
         {
             data = new List<Vare>()
@@ -54,10 +56,10 @@ namespace VareApi.Services
             };
         }
 
-        public IEnumerable<Vare> GetAll()
+        public async Task<IEnumerable<Vare>> GetAll()
         {
-            return data
-                .ToList();
+            return await _db
+                .VareCollection.Find(v=>true).ToListAsync();
         }
 
         public Vare GetById(string id)
@@ -66,9 +68,10 @@ namespace VareApi.Services
                 .Find(vare => vare.ProductId == id)!;
         }
 
-        public string Create(Vare vare)
+        public async Task<string> Create(Vare vare)
         {
-            data.Add(vare);
+            await _db.VareCollection.InsertOneAsync(vare);
+
             return JsonSerializer.Serialize(new { msg = "Ny vare oprettet", newVare = vare });
         }
          public void Update (Vare vare)

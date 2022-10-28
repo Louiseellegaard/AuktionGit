@@ -21,9 +21,9 @@ namespace VareApi.Controllers
 
         // GET api/vare
         [HttpGet]
-        public IEnumerable<Vare> GetVarer()
+        public async Task<IEnumerable<Vare>> GetVarer()
         {
-            var varer = _dataService.GetAll();
+            var varer = await _dataService.GetAll();
             return varer;
         }
 
