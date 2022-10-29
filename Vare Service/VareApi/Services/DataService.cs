@@ -1,8 +1,7 @@
 ﻿using System.Text.Json;
-using VareApi.Controllers;
-using VareApi.Models;
-using Auktion.Services.Vareapi;
 using MongoDB.Driver;
+
+using VareApi.Models;
 
 namespace VareApi.Services
 {
@@ -74,12 +73,13 @@ namespace VareApi.Services
 
             return JsonSerializer.Serialize(new { msg = "Ny vare oprettet", newVare = vare });
         }
-         public void Update (Vare vare)
+         public async Task<string> Update (Vare vare)
         {
-            int update = data
-            .FindIndex(v => v.ProductId == vare.ProductId)!;
-            data.RemoveAt(update);
-            data.Add(vare);
+            await _db
+                .VareCollection
+                .ReplaceOneAsync(filter: v => v.ProductId == vare.ProductId, replacement: vare);
+
+            return JsonSerializer.Serialize(new { msg = "Vare opdateret", newVare = vare });
         }
     }
 }
