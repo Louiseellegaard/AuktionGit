@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,11 +11,4 @@
     <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Services\" />
-    <None Remove="MongoDB.Driver" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

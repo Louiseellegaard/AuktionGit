@@ -3,14 +3,14 @@ using MongoDB.Driver;
 using System;
 using VareApi.Models;
 
-namespace Auktion.Services.Vareapi
+namespace VareApi.Services
 {
-    public class dbcontext
+    public class DbContext
     {
         private readonly IMongoDatabase _mongoDatabase;
 
 
-        public dbcontext()
+        public DbContext()
         {
             // Opretter en MongoDB-client med forbindelse til MongoDB Atlas
             var client = new MongoClient("mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority");
@@ -21,8 +21,7 @@ namespace Auktion.Services.Vareapi
         }
 
 
-
-        // Henter shelters fra _mongoDatabase ("shelterdb")
+        // Henter shelters fra _mongoDatabase ("Vare")
         public IMongoCollection<Vare> VareCollection
         {
             get
