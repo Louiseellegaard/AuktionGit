@@ -2,8 +2,6 @@
 using VareApi.Models;
 using VareApi.Services;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace VareApi.Controllers
 {
     [Route("api/[controller]")]
@@ -23,16 +21,16 @@ namespace VareApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<Vare>> GetVarer()
         {
-            var varer = await _dataService.GetAll();
-            return varer;
+            var vareListe = await _dataService.GetAll();
+            return vareListe;
         }
 
         // GET api/vare/5
         [HttpGet("{id}")]
-        public Vare Get(string id)
+        public async Task<Vare> Get(string id)
         {
-            var productId = _dataService.GetById(id);
-            return productId;
+            var vare = await _dataService.GetById(id);
+            return vare;
         }
 
         // POST api/vare
