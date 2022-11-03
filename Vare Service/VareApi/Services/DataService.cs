@@ -8,7 +8,7 @@ namespace VareApi.Services
     {
         Task<IEnumerable<Vare>> GetAll();
         Task<Vare> GetById(string id);
-        Task<string> Create(Vare vare);
+        Task Create(Vare vare);
         Task<string> Update(Vare vare);
     }
 
@@ -39,13 +39,11 @@ namespace VareApi.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<string> Create(Vare vare)
+        public async Task Create(Vare vare)
         {
             await _db
                 .VareCollection
                 .InsertOneAsync(vare);
-
-            return JsonSerializer.Serialize(new { msg = "Ny vare oprettet", newVare = vare });
         }
 
         public async Task<string> Update(Vare vare)

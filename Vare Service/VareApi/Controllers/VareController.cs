@@ -39,10 +39,17 @@ namespace VareApi.Controllers
 
         // POST api/vare
         [HttpPost]
-        public void Post(Vare vare)
+        public async Task<Vare?> Post(Vare vare)
         {
-           _dataService
+           var result = _dataService
                 .Create(vare);
+
+            if (result.IsFaulted)
+            {
+                return null;
+            }
+
+            return vare;
         }
 
         // PUT api/vare/5
