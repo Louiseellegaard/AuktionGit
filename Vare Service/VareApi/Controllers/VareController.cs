@@ -21,7 +21,9 @@ namespace VareApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<Vare>> GetVarer()
         {
-            var vareListe = await _dataService.GetAll();
+            var vareListe = await _dataService
+                .GetAll();
+
             return vareListe;
         }
 
@@ -29,7 +31,9 @@ namespace VareApi.Controllers
         [HttpGet("{id}")]
         public async Task<Vare> Get(string id)
         {
-            var vare = await _dataService.GetById(id);
+            var vare = await _dataService
+                .GetById(id);
+
             return vare;
         }
 
@@ -37,14 +41,16 @@ namespace VareApi.Controllers
         [HttpPost]
         public void Post(Vare vare)
         {
-           _dataService.Create(vare);
+           _dataService
+                .Create(vare);
         }
 
         // PUT api/vare/5
         [HttpPut]
         public void Put(Vare vare)
         {
-            _dataService.Update(vare);
+            _dataService
+                .Update(vare);
         }
 
         // DELETE api/vare/5

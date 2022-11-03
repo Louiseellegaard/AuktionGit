@@ -19,7 +19,6 @@ namespace VareApi.Services
 
         public DataService(ILogger<DataService> logger, IDbContext db)
         {
-            Console.WriteLine("-----------------");
             _logger = logger;
             _db = db;
         }
@@ -42,7 +41,8 @@ namespace VareApi.Services
 
         public async Task<string> Create(Vare vare)
         {
-            await _db.VareCollection
+            await _db
+                .VareCollection
                 .InsertOneAsync(vare);
 
             return JsonSerializer.Serialize(new { msg = "Ny vare oprettet", newVare = vare });
