@@ -1,3 +1,5 @@
+using Moq;
+
 namespace VareApi.Test;
 
 [TestFixture]
