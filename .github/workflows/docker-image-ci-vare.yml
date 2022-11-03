@@ -28,7 +28,7 @@ jobs:
     - name: Build the Docker image for VareApi 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file "Vare Service/VareApi/dockerfile" --tag ${DOCKER_USER}/kundeapi:latest-dev
+      run: docker build . --file "Vare Service/VareApi/dockerfile" --tag ${DOCKER_USER}/vareapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
