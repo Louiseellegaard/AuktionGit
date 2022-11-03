@@ -15,11 +15,13 @@ namespace VareApi.Services
     public class DataService : IDataService
     {
         private readonly ILogger<DataService> _logger;
-        private readonly DbContext _db = new DbContext();
+        private readonly IDbContext _db;
 
-        public DataService(ILogger<DataService> logger)
+        public DataService(ILogger<DataService> logger, IDbContext db)
         {
+            Console.WriteLine("-----------------");
             _logger = logger;
+            _db = db;
         }
 
         public async Task<IEnumerable<Vare>> GetAll()

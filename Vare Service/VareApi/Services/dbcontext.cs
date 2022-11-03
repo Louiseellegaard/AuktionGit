@@ -5,30 +5,28 @@ using VareApi.Models;
 
 namespace VareApi.Services
 {
-    public class DbContext
+    public interface IDbContext
     {
-        private readonly IMongoDatabase _mongoDatabase;
+        IMongoCollection<Vare> VareCollection { get; }
+    }
 
-
+    public class DbContext : IDbContext
+    {
         public DbContext()
         {
+            var connectionString = "mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority";
+
             // Opretter en MongoDB-client med forbindelse til MongoDB Atlas
-            var client = new MongoClient("mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority");
+            var client = new MongoClient(connectionString);
 
-            // Henter shelter-databasen fra client
-            _mongoDatabase = client.GetDatabase("Auktiondb");
+            // Henter auktions-databasen fra client
+            var _mongoDatabase = client.GetDatabase("Auktiondb");
 
+            VareCollection = _mongoDatabase.GetCollection<Vare>("Vare");
         }
 
-
-        // Henter shelters fra _mongoDatabase ("Vare")
-        public IMongoCollection<Vare> VareCollection
-        {
-            get
-            {
-                return _mongoDatabase.GetCollection<Vare>("Vare");
-            }
-        }
+        // Henter varer fra _mongoDatabase ("Vare")
+        public IMongoCollection<Vare> VareCollection { get; }
 
     }
 }

@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddSingleton<IDataService, DataService>();
+builder.Services.AddSingleton<IDbContext, DbContext>();
 
 var app = builder.Build();
 
