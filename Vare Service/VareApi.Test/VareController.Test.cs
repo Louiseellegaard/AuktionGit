@@ -1,5 +1,8 @@
+using Moq;
+
 namespace VareApi.Test;
 
+[TestFixture]
 public class Tests
 {
     [SetUp]
