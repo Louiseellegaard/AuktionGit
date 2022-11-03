@@ -28,7 +28,7 @@ jobs:
     - name: Build the Docker image for Budpi 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file "Bud Service/KundeApi/dockerfile" --tag ${DOCKER_USER}/budapi:latest-dev
+      run: docker build . --file "Bud Service/BudApi/dockerfile" --tag ${DOCKER_USER}/budapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
