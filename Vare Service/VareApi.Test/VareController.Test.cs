@@ -8,18 +8,52 @@ using VareApi.Services;
 namespace VareApi.Test;
 
 [TestFixture]
-public class Tests
+public class Vare_Tests
 {
     private ILogger<VareController> _logger;
+    //private IConfiguration? _configuration;
 
     [SetUp]
     public void Setup()
     {
         _logger = new Mock<ILogger<VareController>>().Object;
+
+        //var myConfiguration = new Dictionary<string, string>
+        //{
+        //    {"VareBrokerHost", "http://testhost.local"}
+        //};
+
+        //_configuration = new ConfigurationBuilder()
+        //    .AddInMemoryCollection(myConfiguration)
+        //    .Build();
     }
 
     [Test]
-    public async Task TestVareEndpoint_failure_posting()
+    public async Task TestVareEndpoint_post_sucess()
+    {
+        // Arrange
+        var auctionStartTime = new DateTime(2023, 11, 22, 14, 22, 32);
+        var vare = CreateVare(auctionStartTime);
+        var mockRepo = new Mock<IDataService>();
+
+        mockRepo.Setup(svc => svc.Create(vare)).Returns(Task.CompletedTask);
+        
+        var controller = new VareController(_logger, mockRepo.Object);
+
+        // Act
+        var result = await controller.Post(vare);
+
+        // Assert
+        Assert.That(result, Is.InstanceOf(typeof(Vare)));
+        Assert.Multiple(() =>
+        {
+            Assert.That(result?.ProductId, Is.EqualTo(1.ToString()));
+            Assert.That(result?.AuctionStart, Is.EqualTo(auctionStartTime.ToString()));
+        });
+    }
+
+    [Test]
+    public async Task TestVareEndpoint_post_failure()
     {
         // Arrange
         var vare = CreateVare(new DateTime(2023, 11, 22, 14, 22, 32));
@@ -32,18 +66,11 @@ public class Tests
         // Act        
         var result = await controller.Post(vare);
 
-        Console.WriteLine("Id:          " + vare.ProductId);
-        Console.WriteLine("Title:       " + vare.Title);
-        Console.WriteLine("Description: " + vare.Description);
-        Console.WriteLine("Show Room:   " + vare.ShowRoomId);
-        Console.WriteLine("Valuation:   " + vare.Valuation);
-        Console.WriteLine("Start:       " + vare.AuctionStart);
-
         // Assert
         Assert.That(result, Is.Null);
     }
 
-    private Vare CreateVare(DateTime requestTime)
+    private Vare CreateVare(DateTime auctionStartTime)
     {
         var vare = new Vare()
         {
@@ -52,9 +79,19 @@ public class Tests
             Description = "Test bord lavet af birk",
             ShowRoomId = 1,
             Valuation = 10.00,
-            AuctionStart = requestTime.ToLongTimeString(),
+            AuctionStart = auctionStartTime.ToString(),
             Images = new[] {"image1", "image2"}
         };
         return vare;
+    }
+
+    private void PrintVare(Vare vare)
+    {
+        Console.WriteLine("Id:          " + vare.ProductId);
+        Console.WriteLine("Title:       " + vare.Title);
+        Console.WriteLine("Description: " + vare.Description);
+        Console.WriteLine("Show Room:   " + vare.ShowRoomId);
+        Console.WriteLine("Valuation:   " + vare.Valuation);
+        Console.WriteLine("Start:       " + vare.AuctionStart);
     }
 }
