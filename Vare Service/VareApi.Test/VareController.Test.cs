@@ -27,7 +27,7 @@ public class Vare_Tests
         //    .AddInMemoryCollection(myConfiguration)
         //    .Build();
     }
-
+    //hey do
     [Test]
     public async Task TestVareEndpoint_post_sucess()
     {
@@ -67,8 +67,8 @@ public class Vare_Tests
         var controller = new VareController(_logger, mockRepo.Object);
 
         // Act --------------------------------------
-        // Her prøver vi at poste en vare igennem controlleren,
-        // og den skal så modtage et svar tilbage som "result"
+        // Her prï¿½ver vi at poste en vare igennem controlleren,
+        // og den skal sï¿½ modtage et svar tilbage som "result"
         var result = await controller.Post(vare);
 
         // Assert -----------------------------------
