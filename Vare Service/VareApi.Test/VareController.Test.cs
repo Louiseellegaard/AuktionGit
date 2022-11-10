@@ -52,6 +52,9 @@ public class Vare_Tests
         });
     }
 
+    // Vi ønsker at teste det tilfælde, at der opstår en fejl i DataService.Create()-metoden,
+    // når vi laver et HTTP post til vores VareController.
+    // Vi vil gerne teste, at der retuneres et null-objekt fra Post()-metoden.
     [Test]
     public async Task TestVareEndpoint_post_failure()
     {
