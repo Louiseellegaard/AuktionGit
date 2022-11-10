@@ -1,82 +1,58 @@
-﻿using System.Text.Json;
-using VareApi.Controllers;
+﻿using MongoDB.Driver;
+using System.Text.Json;
 using VareApi.Models;
 
 namespace VareApi.Services
 {
     public interface IDataService
     {
-        IEnumerable<Vare> GetAll();
-        Vare GetById(string id);
-        string Create(Vare vare);
-        void Update(Vare vare);
+        Task<IEnumerable<Vare>> GetAll();
+        Task<Vare> GetById(string id);
+        Task Create(Vare vare);
+        Task<string> Update(Vare vare);
     }
 
     public class DataService : IDataService
     {
-        private static List<Vare> data;
+        private readonly ILogger<DataService> _logger;
+        private readonly IDbContext _db;
 
-        public DataService()
+        public DataService(ILogger<DataService> logger, IDbContext db)
         {
-            data = new List<Vare>()
-            {
-                new Vare()
-                {
-                    ProductId = "1",
-                    Title = "Bord",
-                    Description = "Langt bord",
-                    ShowRoomid = 2,
-                    Valuation = 800,
-                    AuctionStart = "16:00",
-                    Images = new string[] { "image1" }
-                },
-                new Vare()
-                {
-                    ProductId = "2",
-                    Title = "Bord",
-                    Description = "Mellem bord",
-                    ShowRoomid = 3,
-                    Valuation = 850,
-                    AuctionStart = "17:00",
-                    Images = new string[] { "image1", "image2" }
-                },
-                new Vare()
-                {
-                    ProductId = "3",
-                    Title = "Bord",
-                    Description = "Kort bord",
-                    ShowRoomid = 4,
-                    Valuation = 750,
-                    AuctionStart = "18:00",
-                    Images = new string[] { "image1" }
-
-                }
-            };
+            _logger = logger;
+            _db = db;
         }
 
-        public IEnumerable<Vare> GetAll()
+        public async Task<IEnumerable<Vare>> GetAll()
         {
-            return data
-                .ToList();
+            return await _db
+                .VareCollection
+                .Find(v => true)
+                .ToListAsync();
         }
 
-        public Vare GetById(string id)
+        public async Task<Vare> GetById(string id)
         {
-            return data
-                .Find(vare => vare.ProductId == id)!;
+            return await _db
+                .VareCollection
+                .Find(v => v.ProductId == id)
+                .FirstOrDefaultAsync();
         }
 
-        public string Create(Vare vare)
+        public async Task Create(Vare vare)
         {
-            data.Add(vare);
-            return JsonSerializer.Serialize(new { msg = "Ny vare oprettet", newVare = vare });
+            await _db
+                .VareCollection
+                .InsertOneAsync(vare);
         }
-         public void Update (Vare vare)
+
+        public async Task<string> Update(Vare vare)
         {
-            int update = data
-            .FindIndex(v => v.ProductId == vare.ProductId)!;
-            data.RemoveAt(update);
-            data.Add(vare);
+            await _db
+                .VareCollection
+                .ReplaceOneAsync(filter: v => v.ProductId == vare.ProductId, replacement: vare);
+
+            return JsonSerializer.Serialize(new { msg = "Vare opdateret", newVare = vare });
         }
     }
 }
