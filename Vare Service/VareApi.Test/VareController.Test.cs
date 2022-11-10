@@ -27,7 +27,7 @@ public class Vare_Tests
         //    .AddInMemoryCollection(myConfiguration)
         //    .Build();
     }
-    //hey do
+
     [Test]
     public async Task TestVareEndpoint_post_sucess()
     {
@@ -36,8 +36,12 @@ public class Vare_Tests
         var vare = CreateVare(auctionStartTime);
         var mockRepo = new Mock<IDataService>();
 
-        mockRepo.Setup(svc => svc.Create(vare)).Returns(Task.CompletedTask);
-        
+        mockRepo.Setup(svc => svc
+            .Create(vare))
+            .Returns(
+            Task.CompletedTask
+        );
+
         var controller = new VareController(_logger, mockRepo.Object);
 
         // Act
@@ -52,23 +56,31 @@ public class Vare_Tests
         });
     }
 
+    // Vi ønsker at teste det tilfælde, at der opstår en fejl i DataService.Create()-metoden,
+    // når vi laver et HTTP post til vores VareController.
+    // Vi vil gerne teste, at der retuneres et null-objekt fra Post()-metoden.
     [Test]
     public async Task TestVareEndpoint_post_failure()
     {
         // Arrange ----------------------------------
         // Laver en vare
         var vare = CreateVare(new DateTime(2023, 11, 22, 14, 22, 32));
-        
+
         // Laver en mock af "DataService"
         var mockRepo = new Mock<IDataService>();
-        
-        mockRepo.Setup(svc => svc.Create(vare)).Returns(Task.FromException(new Exception()));
+
+
+        mockRepo.Setup(svc => svc
+            .Create(vare))
+            .Returns(
+                Task.FromException(new Exception()
+            ));
 
         var controller = new VareController(_logger, mockRepo.Object);
 
         // Act --------------------------------------
-        // Her pr�ver vi at poste en vare igennem controlleren,
-        // og den skal s� modtage et svar tilbage som "result"
+        // Her prøver vi at poste en vare gennem controlleren,
+        // der så venter på at få et svar tilbage, som den gemmer som "result"
         var result = await controller.Post(vare);
 
         // Assert -----------------------------------
@@ -86,7 +98,7 @@ public class Vare_Tests
             ShowRoomId = 1,
             Valuation = 10.00,
             AuctionStart = auctionStartTime.ToString(),
-            Images = new[] {"image1", "image2"}
+            Images = new[] { "image1", "image2" }
         };
         return vare;
     }
