@@ -58,18 +58,24 @@ public class Vare_Tests
     [Test]
     public async Task TestVareEndpoint_post_failure()
     {
-        // Arrange
+        // Arrange ----------------------------------
+        // Laver en vare
         var vare = CreateVare(new DateTime(2023, 11, 22, 14, 22, 32));
+        
+        // Laver en mock af "DataService"
         var mockRepo = new Mock<IDataService>();
         
         mockRepo.Setup(svc => svc.Create(vare)).Returns(Task.FromException(new Exception()));
 
         var controller = new VareController(_logger, mockRepo.Object);
 
-        // Act        
+        // Act --------------------------------------
+        // Her prøver vi at poste en vare igennem controlleren,
+        // og den skal så modtage et svar tilbage som "result"
         var result = await controller.Post(vare);
 
-        // Assert
+        // Assert -----------------------------------
+        // Her tester vi, om "result" = null
         Assert.That(result, Is.Null);
     }
 
