@@ -3,10 +3,10 @@ name: Docker Image CI for KundeApi
 on:
   push:
     branches: [ "develop" ]
-    paths: [ "Kunde Service**" ]
+    paths: [ "Kunde Service/KundeApi/**" ]
   pull_request:
     branches: [ "develop" ]
-    paths: [ "Kunde Service**" ]
+    paths: [ "Kunde Service/KundeApi/**" ]
 
 jobs:
 
