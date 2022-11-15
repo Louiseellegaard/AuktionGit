@@ -51,23 +51,30 @@ namespace VareApi.Controllers
 
         // POST api/vare
         [HttpPost]
-        public async Task Post(Vare vare)
+        public async Task<Vare> Post(Vare vare)
         {
-            await _dataService
+            var result = _dataService
                 .Create(vare);
+
+            if (result.IsFaulted)
+            {
+                return null;
+            }
+
+            return vare;
         }
 
         // PUT api/vare/5
         [HttpPut]
-        public async Task Put(Vare vare)
+        public void Put(Vare vare)
         {
-            await _dataService
+            _dataService
                 .Update(vare);
         }
 
         // DELETE api/vare/5
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        public void Delete(string id)
         {
             throw new NotImplementedException();
         }
