@@ -14,10 +14,14 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\KundeApi\KundeApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="MongoDB.Driver" />
+  </ItemGroup>
 </Project>

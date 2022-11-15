@@ -1,0 +1,36 @@
+name: Docker Image CI for KundeApi
+
+on:
+  push:
+    branches: [ "develop" ]
+    paths: [ "Kunde Service**" ]
+  pull_request:
+    branches: [ "develop" ]
+    paths: [ "Kunde Service**" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Login to Docker Hub 
+      env: 
+        DOCKER_USER: ${{ secrets.DOCKER_USER }} 
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+      run: 
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+        
+    - name: Build the Docker image for KundeApi 
+      env: 
+        DOCKER_USER: ${{ secrets.DOCKER_USER }} 
+      run: docker build . --file "Kunde Service/KundeApi/dockerfile" --tag ${DOCKER_USER}/kundeapi:latest-dev
+      
+    - name: Push Docker image to Docker Hub 
+      env: 
+       DOCKER_USER: ${{ secrets.DOCKER_USER }} 
+      run: docker push ${DOCKER_USER}/kundeapi:latest-dev
