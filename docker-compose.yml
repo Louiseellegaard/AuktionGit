@@ -1,0 +1,30 @@
+services: 
+ vareapi: 
+     image: louiseellegaard/vareapi:latest 
+     ports:  
+     - "8080:80" 
+     environment: 
+     - TaxaBookingBrokerHost=rabbitmq-dev 
+     depends_on: 
+     - rabbitmq-dev 
+ budapi: 
+     image: louiseellegaard/budapi:latest 
+     ports: 
+     - "8081:80" 
+     environment: 
+     - TaxaBookingBrokerHost=rabbitmq-dev 
+     depends_on: 
+     - rabbitmq-dev 
+ kundeapi: 
+     image: louiseellegaard/kundeapi:latest 
+     ports: 
+     - "8082:80" 
+     environment: 
+     - TaxaBookingBrokerHost=rabbitmq-dev 
+     depends_on: 
+     - rabbitmq-dev 
+ rabbitmq-dev: 
+     image: rabbitmq:management 
+     ports: 
+     - "15672:15672" 
+     - "5672:5672"
