@@ -11,21 +11,11 @@ namespace VareApi.Test;
 public class Vare_Tests
 {
     private ILogger<VareController> _logger;
-    //private IConfiguration? _configuration;
 
     [SetUp]
     public void Setup()
     {
         _logger = new Mock<ILogger<VareController>>().Object;
-
-        //var myConfiguration = new Dictionary<string, string>
-        //{
-        //    {"VareBrokerHost", "http://testhost.local"}
-        //};
-
-        //_configuration = new ConfigurationBuilder()
-        //    .AddInMemoryCollection(myConfiguration)
-        //    .Build();
     }
 
     [Test]
