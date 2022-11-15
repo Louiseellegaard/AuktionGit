@@ -17,6 +17,18 @@ namespace VareApi.Controllers
             _dataService = dataService;
         }
 
+        [HttpGet("version")]
+        public IEnumerable<string> Get()
+        {
+            var properties = new List<string>();
+            var assembly = typeof(Program).Assembly;
+            foreach (var attribute in assembly.GetCustomAttributesData())
+            {
+                properties.Add($"{attribute.AttributeType.Name} - { attribute.ToString()}"); 
+            }
+            return properties;
+        }
+
         // GET api/vare
         [HttpGet]
         public async Task<IEnumerable<Vare>> GetVarer()
@@ -39,10 +51,17 @@ namespace VareApi.Controllers
 
         // POST api/vare
         [HttpPost]
-        public void Post(Vare vare)
+        public async Task<Vare?> Post(Vare vare)
         {
-           _dataService
+           var result = _dataService
                 .Create(vare);
+
+            if (result.IsFaulted)
+            {
+                return null;
+            }
+
+            return vare;
         }
 
         // PUT api/vare/5
