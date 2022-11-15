@@ -24,7 +24,7 @@ namespace VareApi.Controllers
             var assembly = typeof(Program).Assembly;
             foreach (var attribute in assembly.GetCustomAttributesData())
             {
-                properties.Add($"{attribute.AttributeType.Name} - { attribute.ToString()}"); 
+                properties.Add($"{attribute.AttributeType.Name} - { attribute}"); 
             }
             return properties;
         }
