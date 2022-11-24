@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace VareApi.Models;
 
 public class Vare
-    {
+{
     [BsonId]
     public string ProductId { get; set; }   
     public string? Title { get; set; }
@@ -13,4 +13,4 @@ public class Vare
     public double Valuation { get; set; }
     public string AuctionStart { get; set; }
     public string[]? Images { get; set; }
-    }
+}
