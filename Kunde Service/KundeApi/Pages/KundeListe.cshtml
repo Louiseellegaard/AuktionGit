@@ -1,0 +1,38 @@
+﻿@page "/kundeliste"
+@model MyApp.Namespace.KundeListeModel
+@{
+}
+
+<h1>Kundeliste</h1>
+<hr />
+<p>Her kommer en tabel med kunder ...</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Navn</th>
+			<th>Telefonnummer</th>
+			<th>Email</th>
+			<th>By</th>
+			<th>Postnummer</th>
+			<th>Land</th>
+			<th>Adresse</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var kunde in Model.KundeListe!)
+		{
+		<tr>
+			<td>@kunde.KundeId</td>
+			<td>@kunde.Name</td>
+			<td>@kunde.PhoneNumber</td>
+			<td>@kunde.Email</td>
+			<td>@kunde.City</td>
+			<td>@kunde.ZipCode</td>
+			<td>@kunde.Country</td>
+			<td>@kunde.Address</td>
+		</tr>
+		}
+	</tbody>
+</table>

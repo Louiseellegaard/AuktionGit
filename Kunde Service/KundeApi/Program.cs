@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
 
+using KundeApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var AllowSomeStuff = "_AllowSomeStuff";
@@ -15,6 +17,7 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo 
@@ -23,6 +26,9 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1" 
     });
 });
+
+builder.Services.AddSingleton<IDataService, DataService>();
+builder.Services.AddSingleton<IDbContext, DbContext>();
 
 var app = builder.Build();
 
@@ -37,5 +43,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapRazorPages();
 
 app.Run();
