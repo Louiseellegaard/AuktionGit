@@ -26,7 +26,11 @@ public class KundeController : ControllerBase
         return properties;
     }
 
-    // GET api/kunde
+    /// <summary>
+    /// Henter listen over alle kunder.
+    /// </summary>
+    /// <returns>Listen over kunder.</returns>
+    // GET api/Kunde
     [HttpGet]
     public async Task<IEnumerable<Kunde>> GetKunder()
     {
