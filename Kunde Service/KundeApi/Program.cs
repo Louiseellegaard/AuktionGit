@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
 
+using KundeApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var AllowSomeStuff = "_AllowSomeStuff";
@@ -24,6 +26,9 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1" 
     });
 });
+
+builder.Services.AddSingleton<IDataService, DataService>();
+builder.Services.AddSingleton<IDbContext, DbContext>();
 
 var app = builder.Build();
 

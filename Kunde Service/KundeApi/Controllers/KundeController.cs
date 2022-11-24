@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using KundeApi.Models;
+using KundeApi.Services;
 
 namespace KundeApi.Controllers;
 
@@ -8,10 +9,12 @@ namespace KundeApi.Controllers;
 public class KundeController : ControllerBase
 {
     private readonly ILogger<KundeController> _logger;
+    private readonly IDataService _dataService;
 
-    public KundeController(ILogger<KundeController> logger)
+    public KundeController(ILogger<KundeController> logger, IDataService dataService)
     {
         _logger = logger;
+        _dataService = dataService;
     }
 
     [HttpGet("version")]
@@ -34,120 +37,37 @@ public class KundeController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Kunde>> GetKunder()
     {
-        var kundeListe = new List<Kunde>()
-        {
-            new Kunde()
-            {
-                KundeId = "1",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "2",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "3",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "4",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "5",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "6",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "7",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "8",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "9",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            },
-            new Kunde()
-            {
-                KundeId = "10",
-                Name = "Mikkel",
-                PhoneNumber = "55555555",
-                Email = "mikkel@mikkel.dk",
-                City = "Aarhus",
-                ZipCode = 8000,
-                Country = "Denmark",
-                Address = "Mikkelvej 10"
-            }
-        };
+        var kundeListe = await _dataService
+            .GetAll();
 
         return kundeListe;
     }
+
+	// POST api/Kunde
+	[HttpPost]
+	public async Task<Kunde> Post(KundeDTO kundeDTO)
+	{
+		Kunde kunde = new()
+		{
+			Name = kundeDTO.Name,
+			PhoneNumber = kundeDTO.PhoneNumber,
+			Email = kundeDTO.Email,
+			City = kundeDTO.City,
+			ZipCode = kundeDTO.ZipCode,
+			Country = kundeDTO.Country,
+			Address = kundeDTO.Address
+		};
+
+		var result = _dataService
+			.Create(kunde);
+
+		if (result.IsFaulted)
+		{
+			return null;
+		}
+
+		return kunde;
+	}
+
+	public record KundeDTO(string Name, string PhoneNumber, string Email, string City, int ZipCode, string Country, string Address);
 }
