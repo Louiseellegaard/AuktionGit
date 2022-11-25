@@ -1,82 +1,152 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using VareApi.Models;
 using VareApi.Services;
 
-namespace VareApi.Controllers
+namespace VareApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class VareController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VareController : ControllerBase
-    {
-        private readonly ILogger<VareController> _logger;
-        private readonly IDataService _dataService;
+	private readonly ILogger<VareController> _logger;
+	private readonly IDataService _dataService;
+	private readonly IMemoryCache _memoryCache;
 
-        public VareController(ILogger<VareController> logger, IDataService dataService) 
-        {
-            _logger = logger;
-            _dataService = dataService;
-        }
+	public VareController(ILogger<VareController> logger, IDataService dataService, IMemoryCache memoryCache)
+	{
+		_logger = logger;
+		_dataService = dataService;
+		_memoryCache = memoryCache;
+	}
 
-        [HttpGet("version")]
-        public IEnumerable<string> Get()
-        {
-            var properties = new List<string>();
-            var assembly = typeof(Program).Assembly;
-            foreach (var attribute in assembly.GetCustomAttributesData())
-            {
-                properties.Add($"{attribute.AttributeType.Name} - { attribute}"); 
-            }
-            return properties;
-        }
+	[HttpGet("version")]
+	public IEnumerable<string> GetVersion()
+	{
+		var properties = new List<string>();
+		var assembly = typeof(Program).Assembly;
+		foreach (var attribute in assembly.GetCustomAttributesData())
+		{
+			properties.Add($"{attribute.AttributeType.Name} - {attribute}");
+		}
+		return properties;
+	}
 
-        // GET api/vare
-        [HttpGet]
-        public async Task<IEnumerable<Vare>> GetVarer()
-        {
-            var vareListe = await _dataService
-                .GetAll();
+	// GET: api/Vare
+	[HttpGet]
+	public async Task<ActionResult<IEnumerable<Vare>>> Get()
+	{
+		return await _dataService
+			.Get();
+	}
 
-            return vareListe;
-        }
+	// GET: api/Vare/5
+	[HttpGet("{id}", Name = "Get")]
+	public async Task<ActionResult<Vare>> Get(string id)
+	{
+		var vare = GetFromCache(id);
 
-        // GET api/vare/5
-        [HttpGet("{id}")]
-        public async Task<Vare> Get(string id)
-        {
-            var vare = await _dataService
-                .GetById(id);
+		if (vare is null)
+		{
+			vare = await _dataService
+				.Get(id);
+			if (vare is null)
+			{
+				return NotFound();
+			}
+			SetInCache(vare);
+		}
+		return vare;
+	}
 
-            return vare;
-        }
+	// POST: api/Vare
+	[HttpPost]
+	public async Task<ActionResult<Vare>> Post([FromBody] VareDTO vareDTO)
+	{
+		Vare vare = new()
+		{
+			Title = vareDTO.Title,
+			Description = vareDTO.Description,
+			ShowRoomId = vareDTO.ShowRoomId,
+			Valuation = vareDTO.Valuation,
+			AuctionStart = vareDTO.AuctionStart,
+			Images = vareDTO.Images
+		};
 
-        // POST api/vare
-        [HttpPost]
-        public async Task<Vare> Post(Vare vare)
-        {
-            var result = _dataService
-                .Create(vare);
+		await _dataService
+			.Create(vare);
 
-            if (result.IsFaulted)
-            {
-                return null;
-            }
+		return vare;
+	}
 
-            return vare;
-        }
+	// PUT: api/Vare/5
+	[HttpPut("{id}")]
+	public async Task<ActionResult<Vare>> Put(string id, [FromBody] VareDTO vareDTO)
+	{
+		var vare = await _dataService
+			.Get(id);
 
-        // PUT api/vare/5
-        [HttpPut]
-        public void Put(Vare vare)
-        {
-            _dataService
-                .Update(vare);
-        }
+		if (vare is null)
+		{
+			return NotFound();
+		}
 
-        // DELETE api/vare/5
-        [HttpDelete("{id}")]
-        public void Delete(string id)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		vare.Title = vareDTO.Title;
+		vare.Description = vareDTO.Description;
+		vare.ShowRoomId = vareDTO.ShowRoomId;
+		vare.Valuation = vareDTO.Valuation;
+		vare.AuctionStart = vareDTO.AuctionStart;
+		vare.Images = vareDTO.Images;
+
+		await _dataService
+			.Update(id, vare);
+
+		return vare;
+	}
+
+	// DELETE: api/Vare/5
+	[HttpDelete("{id}")]
+	public async Task<ActionResult<Vare>> Delete(string id)
+	{
+		var vare = await _dataService
+			.Get(id);
+
+		if (vare is null)
+		{
+			return NotFound();
+		}
+
+		await _dataService
+			.Delete(id);
+
+		return NoContent();
+	}
+
+
+	// -----------------------------------------------
+	// Cache -----------------------------------------
+
+	private void SetInCache(Vare vare)
+	{
+		var cacheExpiryOptions = new MemoryCacheEntryOptions
+		{
+			AbsoluteExpiration = DateTime.Now.AddHours(1),
+			SlidingExpiration = TimeSpan.FromMinutes(10),
+			Priority = CacheItemPriority.High
+		};
+		_memoryCache.Set(vare.ProductId, vare, cacheExpiryOptions);
+	}
+
+	private Vare GetFromCache(string id)
+	{
+		_memoryCache.TryGetValue(id, out Vare vare);
+		return vare;
+	}
+
+	private void RemoveFromCache(string id)
+	{
+		_memoryCache.Remove(id);
+	}
+
+	public record VareDTO(string? Title, string? Description, int ShowRoomId, double Valuation, string AuctionStart, string[]? Images);
 }

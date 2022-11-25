@@ -1,15 +1,16 @@
-﻿using MongoDB.Driver;
-using System.Text.Json;
+﻿using System.Text.Json;
+using MongoDB.Driver;
 using VareApi.Models;
 
 namespace VareApi.Services
 {
     public interface IDataService
     {
-        Task<IEnumerable<Vare>> GetAll();
-        Task<Vare> GetById(string id);
-        Task Create(Vare vare);
-        Task<string> Update(Vare vare);
+        Task<List<Vare>> Get();
+        Task<Vare> Get(string id);
+        Task<Vare> Create(Vare vare);
+        Task<Vare> Update(string id, Vare vare);
+        Task Delete(string id);
     }
 
     public class DataService : IDataService
@@ -23,36 +24,50 @@ namespace VareApi.Services
             _db = db;
         }
 
-        public async Task<IEnumerable<Vare>> GetAll()
+        public async Task<List<Vare>> Get()
         {
+            // Find alle varer.
             return await _db
                 .VareCollection
                 .Find(v => true)
                 .ToListAsync();
         }
 
-        public async Task<Vare> GetById(string id)
+        public async Task<Vare> Get(string id)
         {
+            // Find en enkelt vare.
             return await _db
                 .VareCollection
                 .Find(v => v.ProductId == id)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task Create(Vare vare)
+        public async Task<Vare> Create(Vare vare)
         {
+            // Lav en vare.
             await _db
                 .VareCollection
                 .InsertOneAsync(vare);
+
+            return vare;
         }
 
-        public async Task<string> Update(Vare vare)
+        public async Task<Vare> Update(string id, Vare vare)
         {
+            // Opdater en vare.
             await _db
                 .VareCollection
-                .ReplaceOneAsync(filter: v => v.ProductId == vare.ProductId, replacement: vare);
+                .ReplaceOneAsync(v => v.ProductId == id, vare);
 
-            return JsonSerializer.Serialize(new { msg = "Vare opdateret", newVare = vare });
+            return vare;
+        }
+
+        public async Task Delete(string id)
+        {
+            // Fjern en vare.
+            await _db
+                .VareCollection
+                .DeleteOneAsync(v => v.ProductId == id);
         }
     }
 }
