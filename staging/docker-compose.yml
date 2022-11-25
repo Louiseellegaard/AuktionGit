@@ -1,5 +1,0 @@
-services:
- kundeapi:
-     image: kundeapitest:latest
-     ports:
-     - "8082:80"

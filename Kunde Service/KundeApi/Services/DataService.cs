@@ -46,7 +46,6 @@ namespace KundeApi.Services
 
 		public async Task<Kunde> Create(Kunde kunde)
 		{
-			// Lav en kunde.
 			await _db
 				.KundeCollection
 				.InsertOneAsync(kunde);
