@@ -17,14 +17,19 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRazorPages();
+builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Vare Service", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    { 
+        Title = "Vare Service",
+        Version = "v1"
+    });
 });
 
 builder.Services.AddSingleton<IDataService, DataService>();
 builder.Services.AddSingleton<IDbContext, DbContext>();
-builder.Services.AddRazorPages();   
 
 var app = builder.Build();
 
