@@ -8,8 +8,11 @@ namespace KundeApi.Services
 {
 	public interface IDataService
 	{
-		Task<IEnumerable<Kunde>> GetAll();
-		Task Create(Kunde kunde);
+		Task<List<Kunde>> Get();
+		Task<Kunde> Get(string id);
+		Task<Kunde> Create(Kunde kunde);
+		Task<Kunde> Update(string id, Kunde kunde);
+		Task Delete(string id);
 	}
 
 	public class DataService : IDataService
@@ -23,19 +26,50 @@ namespace KundeApi.Services
 			_db = db;
 		}
 
-		public async Task<IEnumerable<Kunde>> GetAll()
+		public async Task<List<Kunde>> Get()
 		{
+            // Find alle kunder. 
 			return await _db
 				.KundeCollection
-				.Find(v => true)
+				.Find(k => true)
 				.ToListAsync();
 		}
 
-		public async Task Create(Kunde kunde)
+		public async Task<Kunde> Get(string id)
+        {
+            // Find en enkelt kunde. 
+            return await _db
+				.KundeCollection
+				.Find(k => k.KundeId == id)
+				.FirstOrDefaultAsync();
+        }
+
+		public async Task<Kunde> Create(Kunde kunde)
 		{
 			await _db
 				.KundeCollection
 				.InsertOneAsync(kunde);
+
+			return kunde;
 		}
+
+		public async Task<Kunde> Update(string id, Kunde kunde)
+        {
+            // Opdater en kunde. 
+            await _db
+			 	.KundeCollection
+			 	.ReplaceOneAsync(k => k.KundeId == id, kunde);
+            
+			return kunde;
+        }
+
+
+        public async Task Delete(string id)
+        {
+            // Fjern en kunde.
+            await _db
+				.KundeCollection
+				.DeleteOneAsync(k => k.KundeId == id);
+        }
 	}
 }

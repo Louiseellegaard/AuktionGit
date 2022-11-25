@@ -18,7 +18,7 @@ public class KundeController : ControllerBase
     }
 
     [HttpGet("version")]
-    public IEnumerable<string> Get()
+    public IEnumerable<string> GetVersion()
     {
         var properties = new List<string>();
         var assembly = typeof(Program).Assembly;
@@ -33,19 +33,32 @@ public class KundeController : ControllerBase
     /// Henter listen over alle kunder.
     /// </summary>
     /// <returns>Listen over kunder.</returns>
-    // GET api/Kunde
+    // GET: api/Kunde
     [HttpGet]
-    public async Task<IEnumerable<Kunde>> GetKunder()
+    public async Task<ActionResult<IEnumerable<Kunde>>> Get()
     {
-        var kundeListe = await _dataService
-            .GetAll();
-
-        return kundeListe;
+        return await _dataService
+            .Get();
     }
 
-	// POST api/Kunde
+    // GET: api/Kunde/5
+    [HttpGet("{id}", Name = "Get")]
+    public async Task<ActionResult<Kunde>> Get(string id)
+    {
+        var kunde = await _dataService
+            .Get(id);
+
+        if(kunde is null)
+        {
+            return NotFound();
+        }
+
+        return kunde;
+    }
+
+	// POST: api/Kunde
 	[HttpPost]
-	public async Task<Kunde> Post(KundeDTO kundeDTO)
+	public async Task<ActionResult<Kunde>> Post([FromBody] KundeDTO kundeDTO)
 	{
 		Kunde kunde = new()
 		{
@@ -58,15 +71,10 @@ public class KundeController : ControllerBase
 			Address = kundeDTO.Address
 		};
 
-		var result = _dataService
+		await _dataService
 			.Create(kunde);
 
-		if (result.IsFaulted)
-		{
-			return null;
-		}
-
-		return kunde;
+		return CreatedAtRoute("Get", new { id = kunde.KundeId }, kunde);
 	}
 
 	public record KundeDTO(string Name, string PhoneNumber, string Email, string City, int ZipCode, string Country, string Address);
