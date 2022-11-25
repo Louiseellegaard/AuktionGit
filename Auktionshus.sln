@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareApi", "Vare Service\Var
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareApi.Test", "Vare Service\VareApi.Test\VareApi.Test.csproj", "{6FE89BBC-1F41-4471-A477-135843E51337}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stagingUIPages", "stagingUIPages", "{7A7481D1-25C9-4E52-9719-4B43AC93CFA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
