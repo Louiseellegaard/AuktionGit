@@ -5,21 +5,21 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bud Service", "Bud Service", "{39A537F1-5E17-4065-84D7-229DA95E0913}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudApi", "Bud Service\BudApi\BudApi.csproj", "{BF442B30-E9B6-4FD0-9559-C4622F5383DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudService.API", "Bud Service\BudService.API\BudService.API.csproj", "{BF442B30-E9B6-4FD0-9559-C4622F5383DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudApi.Test", "Bud Service\BudApi.Test\BudApi.Test.csproj", "{FDC8CA46-2F20-4A00-BC71-16C88C7245D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudService.Tests", "Bud Service\BudService.Tests\BudService.Tests.csproj", "{FDC8CA46-2F20-4A00-BC71-16C88C7245D8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kunde Service", "Kunde Service", "{ABC4D9F7-270F-48A4-B2F9-CE1E71DFCB8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KundeApi", "Kunde Service\KundeApi\KundeApi.csproj", "{B7D242DE-0BC5-44F4-8B78-C13D873062F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KundeService.API", "Kunde Service\KundeService.API\KundeService.API.csproj", "{B7D242DE-0BC5-44F4-8B78-C13D873062F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KundeApi.Test", "Kunde Service\KundeApi.Test\KundeApi.Test.csproj", "{F3DDBDB3-1C9D-406C-92A6-79F1AE47184F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KundeService.Tests", "Kunde Service\KundeService.Tests\KundeService.Tests.csproj", "{F3DDBDB3-1C9D-406C-92A6-79F1AE47184F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vare Service", "Vare Service", "{C16DFBF5-FD18-4415-BD2A-8385F7103D3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareApi", "Vare Service\VareApi\VareApi.csproj", "{3683108F-1D9B-4784-8E3A-8794C9C8CE2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareService.API", "Vare Service\VareService.API\VareService.API.csproj", "{3683108F-1D9B-4784-8E3A-8794C9C8CE2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareApi.Test", "Vare Service\VareApi.Test\VareApi.Test.csproj", "{6FE89BBC-1F41-4471-A477-135843E51337}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareService.Tests", "Vare Service\VareService.Tests\VareService.Tests.csproj", "{6FE89BBC-1F41-4471-A477-135843E51337}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stagingUIPages", "stagingUIPages", "{7A7481D1-25C9-4E52-9719-4B43AC93CFA0}"
 EndProject
