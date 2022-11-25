@@ -1,7 +1,5 @@
 ﻿using System.Text.Json;
-
 using MongoDB.Driver;
-
 using KundeApi.Models;
 
 namespace KundeApi.Services
@@ -40,7 +38,7 @@ namespace KundeApi.Services
             // Find en enkelt kunde. 
             return await _db
 				.KundeCollection
-				.Find(k => k.KundeId == id)
+				.Find(k => k.CustomerId == id)
 				.FirstOrDefaultAsync();
         }
 
@@ -59,18 +57,17 @@ namespace KundeApi.Services
             // Opdater en kunde. 
             await _db
 			 	.KundeCollection
-			 	.ReplaceOneAsync(k => k.KundeId == id, kunde);
+			 	.ReplaceOneAsync(k => k.CustomerId == id, kunde);
             
 			return kunde;
         }
-
 
         public async Task Delete(string id)
         {
             // Fjern en kunde.
             await _db
 				.KundeCollection
-				.DeleteOneAsync(k => k.KundeId == id);
+				.DeleteOneAsync(k => k.CustomerId == id);
         }
 	}
 }

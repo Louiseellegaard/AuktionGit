@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-
 using KundeApi.Models;
 using KundeApi.Services;
 
@@ -49,7 +48,7 @@ public class KundeController : ControllerBase
 	[HttpGet("{id}", Name = "Get")]
 	public async Task<ActionResult<Kunde>> Get(string id)
 	{
-		var kunde = GetCustomerFromCache(id);
+		var kunde = GetFromCache(id);
 
 		if (kunde is null)
 		{
@@ -60,8 +59,7 @@ public class KundeController : ControllerBase
 			{
 				return NotFound();
 			}
-
-			SetCustomerInCache(kunde);
+			SetInCache(kunde);
 		}
 		return Ok(kunde);
 	}
@@ -84,10 +82,58 @@ public class KundeController : ControllerBase
 		await _dataService
 			.Create(kunde);
 
-		return CreatedAtRoute("Get", new { id = kunde.KundeId }, kunde);
+		return CreatedAtRoute("Get", new { id = kunde.CustomerId }, kunde);
 	}
 
-	private void SetCustomerInCache(Kunde kunde)
+	// PUT: api/Kunde/5
+	[HttpPut("{id}")]
+	public async Task<ActionResult<Kunde>> Put(string id, [FromBody] KundeDTO kundeDTO)
+	{
+		var kunde = await _dataService
+			.Get(id);
+
+		if (kunde is null)
+		{
+			return NotFound();
+		}
+
+		kunde.Name = kundeDTO.Name;
+		kunde.PhoneNumber = kundeDTO.PhoneNumber;
+		kunde.Email = kundeDTO.Email;
+		kunde.City = kundeDTO.City;
+		kunde.ZipCode = kundeDTO.ZipCode;
+		kunde.Country = kundeDTO.Country;
+		kunde.Address = kundeDTO.Address;
+
+		await _dataService
+			.Update(id, kunde);
+
+		return CreatedAtRoute("Get", new { id = kunde.CustomerId }, kunde);
+	}
+
+	// DELETE: api/Kunde/5
+	[HttpDelete("{id}")]
+	public async Task<ActionResult<Kunde>> Delete(string id)
+	{
+		var kunde = await _dataService
+			.Get(id);
+
+		if (kunde is null)
+		{
+			return NotFound();
+		}
+
+		await _dataService
+			.Delete(id);
+
+		return NoContent();
+	}
+
+
+	// -----------------------------------------------
+	// Cache -----------------------------------------
+
+	private void SetInCache(Kunde kunde)
 	{
 		var cacheExpiryOptions = new MemoryCacheEntryOptions
 		{
@@ -95,13 +141,12 @@ public class KundeController : ControllerBase
 			SlidingExpiration = TimeSpan.FromMinutes(10),
 			Priority = CacheItemPriority.High
 		};
-		_memoryCache.Set(kunde.KundeId, kunde, cacheExpiryOptions);
+		_memoryCache.Set(kunde.CustomerId, kunde, cacheExpiryOptions);
 	}
 
-	private Kunde GetCustomerFromCache(string id)
+	private Kunde GetFromCache(string id)
 	{
-		Kunde kunde = null;
-		_memoryCache.TryGetValue(id, out kunde);
+		_memoryCache.TryGetValue(id, out Kunde kunde);
 		return kunde;
 	}
 
