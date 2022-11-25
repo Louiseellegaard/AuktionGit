@@ -1,0 +1,39 @@
+﻿@page "/vareliste"
+@model MyApp.Namespace.VareListeModel
+@{
+}
+
+<h1>Varekatalog</h1>
+<hr />
+<p>Her kommer en tabel med varer ...</p>
+
+@if (Model.VareListe! is not null)
+{
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Titel</th>
+				<th>Beskrivelse</th>
+				<th>ShowRoomId</th>
+				<th>Vudering</th>
+				<th>Auktion Start</th>
+				<th>Billeder</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var vare in Model.VareListe!)
+			{
+				<tr>
+					<td>@vare.ProductId</td>
+					<td>@vare.Title</td>
+					<td>@vare.Description</td>
+					<td>@vare.ShowRoomId</td>
+					<td>@vare.Valuation</td>
+					<td>@vare.AuctionStart</td>
+					<td>@vare.Images</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
