@@ -1,10 +1,6 @@
 services: 
  vareapi: 
-<<<<<<< HEAD
-     image: louiseellegaard/vareapi:latest-dev 
-=======
-     image: louiseellegaard/vareapi:latest-dev
->>>>>>> abc732eaed51cf878ca99d35fdcaba3c88840080
+     image: vareapitest:latest
      ports:  
      - "8080:80" 
      environment: 
@@ -12,11 +8,7 @@ services:
      depends_on: 
      - rabbitmq-dev 
  budapi: 
-<<<<<<< HEAD
-     image: louiseellegaard/budapi:latest-dev 
-=======
      image: louiseellegaard/budapi:latest-dev
->>>>>>> abc732eaed51cf878ca99d35fdcaba3c88840080
      ports: 
      - "8081:80" 
      environment: 
@@ -24,11 +16,7 @@ services:
      depends_on: 
      - rabbitmq-dev 
  kundeapi: 
-<<<<<<< HEAD
-     image: louiseellegaard/kundeapi:latest-dev 
-=======
      image: louiseellegaard/kundeapi:latest-dev
->>>>>>> abc732eaed51cf878ca99d35fdcaba3c88840080
      ports: 
      - "8082:80" 
      environment: 
@@ -40,3 +28,13 @@ services:
      ports: 
      - "15672:15672" 
      - "5672:5672"
+  
+ nginx:
+     image: nginx:latest
+     volumes: 
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+     depends_on:
+      - kundeapi
+      - vareapi
+     ports:
+      - "4000:4000"

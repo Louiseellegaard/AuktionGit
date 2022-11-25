@@ -24,6 +24,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSingleton<IDataService, DataService>();
 builder.Services.AddSingleton<IDbContext, DbContext>();
+builder.Services.AddRazorPages();   
 
 var app = builder.Build();
 
@@ -38,5 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapRazorPages(); 
 
 app.Run();

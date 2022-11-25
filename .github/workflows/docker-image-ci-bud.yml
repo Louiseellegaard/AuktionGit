@@ -3,10 +3,10 @@ name: Docker Image CI for BudApi
 on:
   push:
     branches: [ "develop" ]
-    paths: [ "Bud Service**" ]
+    paths: [ "Bud Service/BudApi/**" ]
   pull_request:
     branches: [ "develop" ]
-    paths: [ "Bud Service**" ]
+    paths: [ "Bud Service/BudApi/**" ]
 
 jobs:
 
@@ -28,7 +28,7 @@ jobs:
     - name: Build the Docker image for Budpi 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file "Bud Service/BudApi/dockerfile" --tag ${DOCKER_USER}/budapi:latest-dev
+      run: docker build . --file "Bud Service/BudApi/Dockerfile" --tag ${DOCKER_USER}/budapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
