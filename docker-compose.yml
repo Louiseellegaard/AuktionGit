@@ -1,6 +1,10 @@
 services: 
  vareapi: 
+<<<<<<< HEAD
      image: louiseellegaard/vareapi:latest-dev 
+=======
+     image: louiseellegaard/vareapi:latest-dev
+>>>>>>> efa5abfaf27258e3096521f72c418de9aa5d31cc
      ports:  
      - "8080:80" 
      environment: 
@@ -8,7 +12,11 @@ services:
      depends_on: 
      - rabbitmq-dev 
  budapi: 
+<<<<<<< HEAD
      image: louiseellegaard/budapi:latest-dev 
+=======
+     image: louiseellegaard/budapi:latest-dev
+>>>>>>> efa5abfaf27258e3096521f72c418de9aa5d31cc
      ports: 
      - "8081:80" 
      environment: 
@@ -16,7 +24,11 @@ services:
      depends_on: 
      - rabbitmq-dev 
  kundeapi: 
+<<<<<<< HEAD
      image: louiseellegaard/kundeapi:latest-dev 
+=======
+     image: louiseellegaard/kundeapi:latest-dev
+>>>>>>> efa5abfaf27258e3096521f72c418de9aa5d31cc
      ports: 
      - "8082:80" 
      environment: 

@@ -6,7 +6,7 @@
     "iisExpress": {
       "applicationUrl": "http://localhost:51759",
       "sslPort": 44318
-    }//hej
+    }
   },
   "profiles": {
     "VareApi": {
