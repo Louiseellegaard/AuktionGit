@@ -22,7 +22,35 @@ public class VareController_Tests
         _memoryCache = new Mock<IMemoryCache>().Object;
     }
 
-    [Test]
+	[Test]
+	public async Task Controller_GetAll_Success()
+	{
+		// Arrange ----------------------------------
+		var list = new List<Vare>()
+		{
+			new Vare(),
+			new Vare(),
+			new Vare()
+		};
+
+		// Laver en mock af "DataService"
+		var mockRepo = new Mock<IDataService>();
+
+		mockRepo.Setup(svc => svc.Get())
+			.ReturnsAsync(list);
+
+		// Laver en controller
+		var controller = new VareController(_logger, mockRepo.Object, _memoryCache);
+
+		// Act --------------------------------------
+		var result = await controller.Get();
+
+		// Assert -----------------------------------
+		Assert.That(result, Is.InstanceOf(typeof(ActionResult<IEnumerable<Vare>>)));
+		Assert.That(result.Value?.Count(), Is.EqualTo(3));
+	}
+
+	[Test]
     public async Task Controller_Post_Sucess()
     {
         // Arrange
