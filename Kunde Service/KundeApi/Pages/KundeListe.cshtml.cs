@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using KundeApi.Models;
 
 namespace MyApp.Namespace
@@ -9,14 +8,14 @@ namespace MyApp.Namespace
     {
 		public List<Kunde>? KundeListe { get; set; }
 
-		public async void OnGet()
+		public void OnGet()
 		{
 			using HttpClient client = new()
 			{
 				BaseAddress = new Uri("http://localhost:80/")
 			};
 			
-			// Get the user information. 
+			// Henter kundeliste. 
 			KundeListe = client.GetFromJsonAsync<List<Kunde>>("api/kunde").Result;
 		}
 	}
