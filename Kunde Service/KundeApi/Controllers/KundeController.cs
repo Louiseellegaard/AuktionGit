@@ -32,10 +32,6 @@ public class KundeController : ControllerBase
 		return properties;
 	}
 
-	/// <summary>
-	/// Henter listen over alle kunder.
-	/// </summary>
-	/// <returns>Listen over kunder.</returns>
 	// GET: api/Kunde
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Kunde>>> Get()
@@ -61,7 +57,7 @@ public class KundeController : ControllerBase
 			}
 			SetInCache(kunde);
 		}
-		return Ok(kunde);
+		return kunde;
 	}
 
 	// POST: api/Kunde
@@ -82,7 +78,7 @@ public class KundeController : ControllerBase
 		await _dataService
 			.Create(kunde);
 
-		return CreatedAtRoute("Get", new { id = kunde.CustomerId }, kunde);
+		return kunde;
 	}
 
 	// PUT: api/Kunde/5
@@ -108,7 +104,7 @@ public class KundeController : ControllerBase
 		await _dataService
 			.Update(id, kunde);
 
-		return CreatedAtRoute("Get", new { id = kunde.CustomerId }, kunde);
+		return kunde;
 	}
 
 	// DELETE: api/Kunde/5

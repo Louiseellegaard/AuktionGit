@@ -1,5 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace KundeApi.Models;
 
@@ -15,4 +15,9 @@ public class Kunde
     public int ZipCode { get; set; }
     public string Country { get; set; }
     public string Address { get; set; }
+
+    public Kunde()
+    {
+        CustomerId = ObjectId.GenerateNewId().ToString();
+    }
 }
