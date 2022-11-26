@@ -36,6 +36,8 @@ public class KundeController : ControllerBase
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Kunde>>> Get()
 	{
+		_logger.LogDebug("Henter liste over alle kunder.");
+
 		return await _dataService
 			.Get();
 	}
@@ -44,10 +46,14 @@ public class KundeController : ControllerBase
 	[HttpGet("{id}", Name = "Get")]
 	public async Task<ActionResult<Kunde>> Get(string id)
 	{
+		_logger.LogDebug("Leder efter kunde med id: {id}.", id);
+
 		var kunde = GetFromCache(id);
 
 		if (kunde is null)
 		{
+			_logger.LogDebug($"Kunde findes ikke i cache. Henter fra database.");
+
 			kunde = await _dataService
 				.Get(id);
 
@@ -55,6 +61,9 @@ public class KundeController : ControllerBase
 			{
 				return NotFound();
 			}
+
+			_logger.LogDebug($"Gemmer kunde i cache.");
+
 			SetInCache(kunde);
 		}
 		return kunde;
@@ -64,6 +73,8 @@ public class KundeController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<Kunde>> Post([FromBody] KundeDTO kundeDTO)
 	{
+		_logger.LogDebug("Opretter ny kunde.");
+
 		Kunde kunde = new()
 		{
 			Name = kundeDTO.Name,
@@ -85,6 +96,8 @@ public class KundeController : ControllerBase
 	[HttpPut("{id}")]
 	public async Task<ActionResult<Kunde>> Put(string id, [FromBody] KundeDTO kundeDTO)
 	{
+		_logger.LogDebug("Leder efter kunde med id: {id}.", id);
+
 		var kunde = await _dataService
 			.Get(id);
 
@@ -101,6 +114,8 @@ public class KundeController : ControllerBase
 		kunde.Country = kundeDTO.Country;
 		kunde.Address = kundeDTO.Address;
 
+		_logger.LogDebug("Opdaterer kunde med nye værdier.");
+
 		await _dataService
 			.Update(id, kunde);
 
@@ -111,6 +126,8 @@ public class KundeController : ControllerBase
 	[HttpDelete("{id}")]
 	public async Task<ActionResult<Kunde>> Delete(string id)
 	{
+		_logger.LogDebug("Leder efter kunde med id: {id}.", id);
+
 		var kunde = await _dataService
 			.Get(id);
 
@@ -118,6 +135,8 @@ public class KundeController : ControllerBase
 		{
 			return NotFound();
 		}
+
+		_logger.LogDebug("Fjerner kunde fra database.");
 
 		await _dataService
 			.Delete(id);
@@ -127,7 +146,7 @@ public class KundeController : ControllerBase
 
 
 	// -----------------------------------------------
-	// Cache -----------------------------------------
+	// Cache
 
 	private void SetInCache(Kunde kunde)
 	{
@@ -138,11 +157,13 @@ public class KundeController : ControllerBase
 			Priority = CacheItemPriority.High
 		};
 		_memoryCache.Set(kunde.CustomerId, kunde, cacheExpiryOptions);
+		_logger.LogDebug("Gemmer {kunde} i cache.", kunde);
 	}
 
 	private Kunde GetFromCache(string id)
 	{
 		_memoryCache.TryGetValue(id, out Kunde kunde);
+		_logger.LogDebug("Henter {kunde} fra cache.", kunde);
 		return kunde;
 	}
 
