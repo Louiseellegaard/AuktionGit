@@ -8,12 +8,14 @@ services:
 
  budservice:
      image: budtest:latest
-     ports:
+     hostname: budservice
+     expose:
      - "80"
 
  kundeservice:
      image: kundetest:latest
-     ports:
+     hostname: kundeservice
+     expose:
      - "80"
   
  nginx:
