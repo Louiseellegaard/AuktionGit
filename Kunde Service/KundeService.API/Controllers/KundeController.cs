@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using KundeService.Models;
 using KundeService.Services;
+using Microsoft.AspNetCore.Http.Features;
+using System.Text;
 
 namespace KundeService.Controllers;
 
@@ -21,14 +23,19 @@ public class KundeController : ControllerBase
 	}
 
 	[HttpGet("version")]
-	public IEnumerable<string> GetVersion()
+	public Dictionary<string, string> GetVersion()
 	{
-		var properties = new List<string>();
+		var properties = new Dictionary<string, string>();
 		var assembly = typeof(Program).Assembly;
-		foreach (var attribute in assembly.GetCustomAttributesData())
-		{
-			properties.Add($"{attribute.AttributeType.Name} - {attribute}");
-		}
+
+		properties.Add("service", "Catalog");
+		var ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(Program).Assembly.Location).ProductVersion ?? "Undefined";
+		properties.Add("version", ver);
+
+		var feature = HttpContext.Features.Get<IHttpConnectionFeature>();
+		var localIPAddr = feature?.LocalIpAddress?.ToString() ?? "N/A";
+		properties.Add("local-host-address", localIPAddr);
+
 		return properties;
 	}
 
@@ -141,6 +148,11 @@ public class KundeController : ControllerBase
 		await _dataService
 			.Delete(id);
 
+		if (GetFromCache(id) is not null)
+		{
+			RemoveFromCache(id);
+		}
+
 		return NoContent();
 	}
 
@@ -170,6 +182,7 @@ public class KundeController : ControllerBase
 	private void RemoveFromCache(string id)
 	{
 		_memoryCache.Remove(id);
+		_logger.LogDebug("Fjerner kunde fra cache.");
 	}
 
 	public record KundeDTO(string Name, string PhoneNumber, string Email, string City, int ZipCode, string Country, string Address);
