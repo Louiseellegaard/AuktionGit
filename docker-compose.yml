@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 services: 
  vareapi: 
 <<<<<<< HEAD
@@ -40,3 +41,30 @@ services:
      ports: 
      - "15672:15672" 
      - "5672:5672"
+=======
+version: '3.4'
+
+services:
+  vareservice:
+    image: louiseellegaard/vareapi:latest-dev
+    ports:
+      - "8080:80"
+
+  kundeservice:
+    image: louiseellegaard/kundeapi:latest-dev
+    ports:
+      - "8081:80"
+
+  budservice:
+    image: louiseellegaard/budapi:latest-dev
+    ports:
+      - "8082:80"
+    depends_on:
+      - rabbitmq-dev
+
+  rabbitmq-dev:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+>>>>>>> 3564cdd6c4a2cc4daa1830ad34c9fb021cd7d3f9

@@ -16,7 +16,7 @@ services:
      depends_on: 
      - rabbitmq-dev 
  kundeapi: 
-     image: louiseellegaard/kundeapi:latest-dev
+     image: kundeapitest:latest
      ports: 
      - "8082:80" 
      environment: 

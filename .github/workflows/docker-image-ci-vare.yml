@@ -1,12 +1,12 @@
-name: Docker Image CI for VareApi
+name: Docker Image CI for VareAPI
 
 on:
   push:
     branches: [ "develop" ]
-    paths: [ "Vare Service/VareApi/**" ]
+    paths: [ "Vare Service/VareService.API/**" ]
   pull_request:
     branches: [ "develop" ]
-    paths: [ "Vare Service/VareApi/**" ]
+    paths: [ "Vare Service/VareService.API/**" ]
 
 jobs:
 
@@ -25,12 +25,12 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
         
-    - name: Build the Docker image for VareApi 
+    - name: Build the Docker image for VareAPI 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file "Vare Service/VareApi/Dockerfile" --tag ${DOCKER_USER}/vareapi:latest-dev
+      run: docker build . --file "Vare Service/VareService.API/Dockerfile" --tag ${DOCKER_USER}/vareapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
-       DOCKER_USER: ${{ secrets.DOCKER_USER }} 
+        DOCKER_USER: ${{ secrets.DOCKER_USER }} 
       run: docker push ${DOCKER_USER}/vareapi:latest-dev

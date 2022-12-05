@@ -1,12 +1,12 @@
-name: Docker Image CI for KundeApi
+name: Docker Image CI for KundeAPI
 
 on:
   push:
     branches: [ "develop" ]
-    paths: [ "Kunde Service/KundeApi/**" ]
+    paths: [ "Kunde Service/KundeService.API/**" ]
   pull_request:
     branches: [ "develop" ]
-    paths: [ "Kunde Service/KundeApi/**" ]
+    paths: [ "Kunde Service/KundeService.API/**" ]
 
 jobs:
 
@@ -25,12 +25,12 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
         
         
-    - name: Build the Docker image for KundeApi 
+    - name: Build the Docker image for KundeAPI 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file "Kunde Service/KundeApi/Dockerfile" --tag ${DOCKER_USER}/kundeapi:latest-dev
+      run: docker build . --file "Kunde Service/KundeService.API/Dockerfile" --tag ${DOCKER_USER}/kundeapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
-       DOCKER_USER: ${{ secrets.DOCKER_USER }} 
+        DOCKER_USER: ${{ secrets.DOCKER_USER }} 
       run: docker push ${DOCKER_USER}/kundeapi:latest-dev
