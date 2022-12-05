@@ -42,6 +42,8 @@ public class BudController : ControllerBase
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Bud>>> Get()
 	{
+		_logger.LogDebug("Henter liste over alle bud.");
+
 		return await _dataService
 			.Get();
 	}
@@ -50,10 +52,14 @@ public class BudController : ControllerBase
 	[HttpGet("{id}", Name = "Get")]
 	public async Task<ActionResult<Bud>> Get(string id)
 	{
+		_logger.LogDebug("Leder efter bu dmed id: {id}.", id);
+
 		var bud = GetFromCache(id);
 
 		if (bud is null)
 		{
+			_logger.LogDebug($"Bud findes ikke i cache. Henter fra database.");
+
 			bud = await _dataService
 				.Get(id);
 
@@ -61,6 +67,8 @@ public class BudController : ControllerBase
 			{
 				return NotFound();
 			}
+			_logger.LogDebug($"Gemmer bud i cache.");
+
 			SetInCache(bud);
 		}
 		return bud;
@@ -70,6 +78,8 @@ public class BudController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<Bud>> Post([FromBody] BudDTO BudDTO)
 	{
+		_logger.LogDebug("Opretter nyt bud.");
+
 		Bud bud = new()
 		{
 			AuctionId = BudDTO.AuctionId,
@@ -88,6 +98,8 @@ public class BudController : ControllerBase
 	[HttpPut("{id}")]
 	public async Task<ActionResult<Bud>> Put(string id, [FromBody] BudDTO BudDTO)
 	{
+		_logger.LogDebug("Leder efter bud med id: {id}.", id);
+
 		var bud = await _dataService
 			.Get(id);
 
@@ -101,6 +113,8 @@ public class BudController : ControllerBase
 			bud.Date = BudDTO.Date;
 			bud.Bid = BudDTO.Bid;
 
+		_logger.LogDebug("Opdaterer bud med nye værdier.");
+
 		await _dataService
 			.Update(id, bud);
 
@@ -111,6 +125,8 @@ public class BudController : ControllerBase
 	[HttpDelete("{id}")]
 	public async Task<ActionResult<Bud>> Delete(string id)
 	{
+		_logger.LogDebug("Leder efter bud med id: {id}.", id);
+
 		var bud = await _dataService
 			.Get(id);
 
@@ -119,8 +135,15 @@ public class BudController : ControllerBase
 			return NotFound();
 		}
 
+		_logger.LogDebug("Fjerner bud fra database.");
+
 		await _dataService
 			.Delete(id);
+
+		if (GetFromCache(id) is not null)
+		{
+			RemoveFromCache(id);
+		}
 
 		return NoContent();
 	}
@@ -138,17 +161,20 @@ public class BudController : ControllerBase
 			Priority = CacheItemPriority.High
 		};
 		_memoryCache.Set(bud.BidId, bud, cacheExpiryOptions);
+		_logger.LogDebug("Gemmer {bud} i cache.", bud);
 	}
 
 	private Bud GetFromCache(string id)
 	{
 		_memoryCache.TryGetValue(id, out Bud bud);
+		_logger.LogDebug("Henter {bud} fra cache.", bud);
 		return bud;
 	}
 
 	private void RemoveFromCache(string id)
 	{
 		_memoryCache.Remove(id);
+		_logger.LogDebug("Fjerner bud fra cache.");
 	}
 
 	public record BudDTO(string? AuctionId, string? BuyerId, DateTime Date, double Bid);
