@@ -26,7 +26,7 @@ namespace KundeService.Services
 
 		public async Task<List<Kunde>> Get()
 		{
-            // Find alle kunder. 
+            // Find alle kunder.
 			return await _db
 				.KundeCollection
 				.Find(k => true)

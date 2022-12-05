@@ -4,6 +4,7 @@ using BudService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Allow CORS
 var AllowSomeStuff = "_AllowSomeStuff";
 builder.Services.AddCors(options =>
 {
@@ -21,14 +22,20 @@ builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bud Service", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Bud Service",
+        Version = "v1"
+    });
 });
 
+// Add internal services to the application
 builder.Services.AddSingleton<IDataService, DataService>();
 builder.Services.AddSingleton<IDbContext, DbContext>();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {

@@ -1,6 +1,5 @@
-﻿using MongoDB;
-using MongoDB.Driver;
-using System;
+﻿using MongoDB.Driver;
+
 using BudService.Models;
 
 namespace BudService.Services
@@ -14,18 +13,18 @@ namespace BudService.Services
     {
         public DbContext()
         {
-            var connectionString = "mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority";
+            var _connectionString = "mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority";
 
-            // Opretter en MongoDB-client med forbindelse til MongoDB Atlas
-            var client = new MongoClient(connectionString);
+            // Opretter en 'MongoClient' med forbindelse til MongoDB Atlas
+            var _client = new MongoClient(_connectionString);
 
-            // Henter auktions-databasen fra client
-            var _mongoDatabase = client.GetDatabase("Auktiondb");
+			// Henter auktions-databasen fra '_client'
+			var _mongoDatabase = _client.GetDatabase("Auktiondb");
 
-            BudCollection = _mongoDatabase.GetCollection<Bud>("Bud");
+			// Henter bud-collection fra '_mongoDatabase'
+			BudCollection = _mongoDatabase.GetCollection<Bud>("Bud");
         }
 
-        // Henter bud fra _mongoDatabase ("Bud")
         public IMongoCollection<Bud> BudCollection { get; }
 
     }

@@ -26,7 +26,7 @@ namespace BudService.Services
 
         public async Task<List<Bud>> Get()
         {
-            // Find alle budr.
+            // Find alle bud.
             return await _db
                 .BudCollection
                 .Find(v => true)
@@ -35,7 +35,7 @@ namespace BudService.Services
 
         public async Task<Bud> Get(string id)
         {
-            // Find en enkelt bud.
+            // Find et enkelt bud.
             return await _db
                 .BudCollection
                 .Find(v => v.BidId == id)
@@ -44,7 +44,7 @@ namespace BudService.Services
 
         public async Task<Bud> Create(Bud bud)
         {
-            // Lav en bud.
+            // Lav et bud.
             await _db
                 .BudCollection
                 .InsertOneAsync(bud);
@@ -54,7 +54,7 @@ namespace BudService.Services
 
         public async Task<Bud> Update(string id, Bud Bud)
         {
-            // Opdater en Bud.
+            // Opdater et bud.
             await _db
                 .BudCollection
                 .ReplaceOneAsync(v => v.BidId == id, Bud);
@@ -64,7 +64,7 @@ namespace BudService.Services
 
         public async Task Delete(string id)
         {
-            // Fjern en Bud.
+            // Fjern et bud.
             await _db
                 .BudCollection
                 .DeleteOneAsync(v => v.BidId == id);
