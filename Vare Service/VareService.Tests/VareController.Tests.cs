@@ -113,6 +113,7 @@ public class VareController_Tests
     {
         var vare = new Vare()
         {
+            Category = ProductCategory.Furniture,
             Title = "Test Bord",
             Description = "Test bord lavet af birk",
             ShowRoomId = 1,
@@ -125,7 +126,8 @@ public class VareController_Tests
 
 	private VareController.VareDTO CreateVareDTO(Vare vare)
 	{
-        VareController.VareDTO vareDTO = new VareController.VareDTO(
+        VareController.VareDTO vareDTO = new(
+            vare.Category,
             vare.Title,
             vare.Description,
             vare.ShowRoomId,

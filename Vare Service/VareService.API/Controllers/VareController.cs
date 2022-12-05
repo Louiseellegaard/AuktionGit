@@ -84,6 +84,7 @@ public class VareController : ControllerBase
 
 		Vare vare = new()
 		{
+			Category = vareDTO.Category,
 			Title = vareDTO.Title,
 			Description = vareDTO.Description,
 			ShowRoomId = vareDTO.ShowRoomId,
@@ -112,6 +113,7 @@ public class VareController : ControllerBase
 			return NotFound();
 		}
 
+		vare.Category = vareDTO.Category;
 		vare.Title = vareDTO.Title;
 		vare.Description = vareDTO.Description;
 		vare.ShowRoomId = vareDTO.ShowRoomId;
@@ -183,5 +185,5 @@ public class VareController : ControllerBase
 		_logger.LogDebug("Fjerner vare fra cache.");
 	}
 
-	public record VareDTO(string? Title, string? Description, int ShowRoomId, double Valuation, string AuctionStart, string[]? Images);
+	public record VareDTO(ProductCategory Category, string? Title, string? Description, int ShowRoomId, double Valuation, string AuctionStart, string[]? Images);
 }
