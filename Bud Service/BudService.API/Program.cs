@@ -1,5 +1,7 @@
 using Microsoft.OpenApi.Models;
 
+using BudService.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var AllowSomeStuff = "_AllowSomeStuff";
@@ -15,10 +17,16 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRazorPages();
+builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bud Service", Version = "v1" });
 });
+
+builder.Services.AddSingleton<IDataService, DataService>();
+builder.Services.AddSingleton<IDbContext, DbContext>();
+
 var app = builder.Build();
 
 app.UseSwagger();

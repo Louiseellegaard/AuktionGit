@@ -18,6 +18,7 @@
     </Description>
   </PropertyGroup>
 	
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'KundeService' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
