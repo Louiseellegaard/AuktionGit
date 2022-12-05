@@ -1,0 +1,36 @@
+services:
+
+ vareservice:
+     image: varetest:latest
+     hostname: vareservice
+     expose:
+     - "80"
+
+ budservice:
+     image: budtest:latest
+     hostname: budservice
+     expose:
+     - "80"
+
+ kundeservice:
+     image: kundetest:latest
+     hostname: kundeservice
+     expose:
+     - "80"
+  
+ nginx:
+     image: nginx:latest
+     container_name: "gateway"
+     volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./www:/www/data
+     depends_on:
+      - kundeservice
+      - vareservice
+     ports:
+      - "4000:4000"
+
+networks:
+  default:
+    driver: bridge
+    name: auktionshus

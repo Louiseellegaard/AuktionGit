@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareService.API", "Vare Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareService.Tests", "Vare Service\VareService.Tests\VareService.Tests.csproj", "{6FE89BBC-1F41-4471-A477-135843E51337}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stagingUIPages", "stagingUIPages", "{7A7481D1-25C9-4E52-9719-4B43AC93CFA0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppStaging", "AppStaging", "{7A7481D1-25C9-4E52-9719-4B43AC93CFA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
