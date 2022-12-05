@@ -29,7 +29,7 @@ namespace BudService.Services
             // Find alle bud.
             return await _db
                 .BudCollection
-                .Find(v => true)
+                .Find(b => true)
                 .ToListAsync();
         }
 
@@ -38,7 +38,7 @@ namespace BudService.Services
             // Find et enkelt bud.
             return await _db
                 .BudCollection
-                .Find(v => v.BidId == id)
+                .Find(b => b.BidId == id)
                 .FirstOrDefaultAsync();
         }
 
@@ -57,7 +57,7 @@ namespace BudService.Services
             // Opdater et bud.
             await _db
                 .BudCollection
-                .ReplaceOneAsync(v => v.BidId == id, Bud);
+                .ReplaceOneAsync(b => b.BidId == id, Bud);
 
             return Bud;
         }
@@ -67,7 +67,7 @@ namespace BudService.Services
             // Fjern et bud.
             await _db
                 .BudCollection
-                .DeleteOneAsync(v => v.BidId == id);
+                .DeleteOneAsync(b => b.BidId == id);
         }
     }
 }

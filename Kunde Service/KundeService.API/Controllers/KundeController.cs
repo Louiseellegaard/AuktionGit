@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Caching.Memory;
+
 using KundeService.Models;
 using KundeService.Services;
-using Microsoft.AspNetCore.Http.Features;
-using System.Text;
 
 namespace KundeService.Controllers;
 
