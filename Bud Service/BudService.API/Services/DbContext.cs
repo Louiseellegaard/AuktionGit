@@ -1,6 +1,5 @@
-﻿using MongoDB;
-using MongoDB.Driver;
-using System;
+﻿using MongoDB.Driver;
+
 using BudService.Models;
 
 namespace BudService.Services
@@ -12,21 +11,26 @@ namespace BudService.Services
 
     public class DbContext : IDbContext
     {
-        public DbContext()
-        {
-            var connectionString = "mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority";
+		private ILogger<DbContext> _logger;
+		public IMongoCollection<Bud> BudCollection { get; }
 
-            // Opretter en MongoDB-client med forbindelse til MongoDB Atlas
-            var client = new MongoClient(connectionString);
+		public DbContext(ILogger<DbContext> logger)
+		{
+			_logger = logger;
 
-            // Henter auktions-databasen fra client
-            var _mongoDatabase = client.GetDatabase("Auktiondb");
+			var _connectionString = "mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority";
 
-            BudCollection = _mongoDatabase.GetCollection<Bud>("Bud");
-        }
+            // Opretter en 'MongoClient' med forbindelse til MongoDB Atlas
+            var _client = new MongoClient(_connectionString);
 
-        // Henter bud fra _mongoDatabase ("Bud")
-        public IMongoCollection<Bud> BudCollection { get; }
+			// Henter auktions-databasen fra '_client'
+			var _mongoDatabase = _client.GetDatabase("Auktiondb");
 
+			// Henter bud-collection fra '_mongoDatabase'
+			BudCollection = _mongoDatabase.GetCollection<Bud>("Bud");
+
+			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase);
+			_logger.LogInformation("Benytter collection {collection}", BudCollection);
+		}
     }
 }

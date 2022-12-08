@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using BudService.Models;
 using BudService.Services;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace BudService.Controllers;
 
@@ -21,21 +22,28 @@ public class BudController : ControllerBase
 	}
 
 	[HttpGet("version")]
-	public IEnumerable<string> GetVersion()
+	public Dictionary<string, string> GetVersion()
 	{
-		var properties = new List<string>();
+		var properties = new Dictionary<string, string>();
 		var assembly = typeof(Program).Assembly;
-		foreach (var attribute in assembly.GetCustomAttributesData())
-		{
-			properties.Add($"{attribute.AttributeType.Name} - {attribute}");
-		}
+
+		properties.Add("service", "Catalog");
+		var ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(Program).Assembly.Location).ProductVersion ?? "Undefined";
+		properties.Add("version", ver);
+
+		var feature = HttpContext.Features.Get<IHttpConnectionFeature>();
+		var localIPAddr = feature?.LocalIpAddress?.ToString() ?? "N/A";
+		properties.Add("local-host-address", localIPAddr);
+
 		return properties;
 	}
 
-	// GET: api/bud
+	// GET: api/Bud
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Bud>>> Get()
 	{
+		_logger.LogDebug("Henter liste over alle bud.");
+
 		return await _dataService
 			.Get();
 	}
@@ -44,31 +52,40 @@ public class BudController : ControllerBase
 	[HttpGet("{id}", Name = "Get")]
 	public async Task<ActionResult<Bud>> Get(string id)
 	{
+		_logger.LogDebug("Leder efter bu dmed id: {id}.", id);
+
 		var bud = GetFromCache(id);
 
 		if (bud is null)
 		{
+			_logger.LogDebug($"Bud findes ikke i cache. Henter fra database.");
+
 			bud = await _dataService
 				.Get(id);
+
 			if (bud is null)
 			{
 				return NotFound();
 			}
+			_logger.LogDebug($"Gemmer bud i cache.");
+
 			SetInCache(bud);
 		}
 		return bud;
 	}
 
-	// POST: api/bud
+	// POST: api/Bud
 	[HttpPost]
-	public async Task<ActionResult<Bud>> Post([FromBody] budDTO budDTO)
+	public async Task<ActionResult<Bud>> Post([FromBody] BudDTO BudDTO)
 	{
+		_logger.LogDebug("Opretter nyt bud.");
+
 		Bud bud = new()
 		{
-			AuctionId = budDTO.AuctionId,
-			BuyerId = budDTO.BuyerId,
-			Date = budDTO.Date,
-			Bid = budDTO.Bid,
+			AuctionId = BudDTO.AuctionId,
+			BuyerId = BudDTO.BuyerId,
+			Date = BudDTO.Date,
+			Bid = BudDTO.Bid,
 		};
 
 		await _dataService
@@ -77,10 +94,12 @@ public class BudController : ControllerBase
 		return bud;
 	}
 
-	// PUT: api/bud/5
+	// PUT: api/Bud/5
 	[HttpPut("{id}")]
-	public async Task<ActionResult<Bud>> Put(string id, [FromBody] budDTO budDTO)
+	public async Task<ActionResult<Bud>> Put(string id, [FromBody] BudDTO BudDTO)
 	{
+		_logger.LogDebug("Leder efter bud med id: {id}.", id);
+
 		var bud = await _dataService
 			.Get(id);
 
@@ -89,10 +108,12 @@ public class BudController : ControllerBase
 			return NotFound();
 		}
 
-	        bud.AuctionId = budDTO.AuctionId;
-			bud.BuyerId = budDTO.BuyerId;
-			bud.Date = budDTO.Date;
-			bud.Bid = budDTO.Bid;
+	        bud.AuctionId = BudDTO.AuctionId;
+			bud.BuyerId = BudDTO.BuyerId;
+			bud.Date = BudDTO.Date;
+			bud.Bid = BudDTO.Bid;
+
+		_logger.LogDebug("Opdaterer bud med nye værdier.");
 
 		await _dataService
 			.Update(id, bud);
@@ -100,10 +121,12 @@ public class BudController : ControllerBase
 		return bud;
 	}
 
-	// DELETE: api/bud/5
+	// DELETE: api/Bud/5
 	[HttpDelete("{id}")]
 	public async Task<ActionResult<Bud>> Delete(string id)
 	{
+		_logger.LogDebug("Leder efter bud med id: {id}.", id);
+
 		var bud = await _dataService
 			.Get(id);
 
@@ -112,8 +135,15 @@ public class BudController : ControllerBase
 			return NotFound();
 		}
 
+		_logger.LogDebug("Fjerner bud fra database.");
+
 		await _dataService
 			.Delete(id);
+
+		if (GetFromCache(id) is not null)
+		{
+			RemoveFromCache(id);
+		}
 
 		return NoContent();
 	}
@@ -131,18 +161,21 @@ public class BudController : ControllerBase
 			Priority = CacheItemPriority.High
 		};
 		_memoryCache.Set(bud.BidId, bud, cacheExpiryOptions);
+		_logger.LogDebug("Gemmer {bud} i cache.", bud);
 	}
 
 	private Bud GetFromCache(string id)
 	{
 		_memoryCache.TryGetValue(id, out Bud bud);
+		_logger.LogDebug("Henter {bud} fra cache.", bud);
 		return bud;
 	}
 
 	private void RemoveFromCache(string id)
 	{
 		_memoryCache.Remove(id);
+		_logger.LogDebug("Fjerner bud fra cache.");
 	}
 
-	public record budDTO(string? AuctionId, string? BuyerId, DateTime Date, double Bid);
+	public record BudDTO(string? AuctionId, string? BuyerId, DateTime Date, double Bid);
 }

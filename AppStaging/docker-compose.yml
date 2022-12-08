@@ -1,19 +1,19 @@
 services:
 
  vareservice:
-     image: varetest:latest
+     image: louiseellegaard/vareapi:latest-dev
      hostname: vareservice
      expose:
      - "80"
 
  budservice:
-     image: budtest:latest
+     image: louiseellegaard/budapi:latest-dev
      hostname: budservice
      expose:
      - "80"
 
  kundeservice:
-     image: kundetest:latest
+     image: louiseellegaard/kundeapi:latest-dev
      hostname: kundeservice
      expose:
      - "80"
