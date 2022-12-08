@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VareService.Tests", "Vare S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppStaging", "AppStaging", "{7A7481D1-25C9-4E52-9719-4B43AC93CFA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuktionService.API", "AuktionService\AuktionService.API\AuktionService.API.csproj", "{A8E0766F-509F-424E-BD16-FD4EA58F1A23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{6FE89BBC-1F41-4471-A477-135843E51337}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE89BBC-1F41-4471-A477-135843E51337}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE89BBC-1F41-4471-A477-135843E51337}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
