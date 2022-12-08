@@ -17,6 +17,13 @@ services:
      hostname: kundeservice
      expose:
      - "80"
+
+ auktionservice:
+     image: louiseellegaard/auktionapi:latest-dev
+     hostname: auktionservice
+     expose:
+     - "80"
+  
   
  nginx:
      image: nginx:latest
@@ -27,6 +34,9 @@ services:
      depends_on:
       - kundeservice
       - vareservice
+      - budservice
+      - auktionservice
+      
      ports:
       - "4000:4000"
 
