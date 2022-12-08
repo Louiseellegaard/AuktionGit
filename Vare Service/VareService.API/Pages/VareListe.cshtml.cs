@@ -6,17 +6,26 @@ namespace MyApp.Namespace
 {
 	public class VareListeModel : PageModel
 	{
+		private readonly IHttpClientFactory? _clientFactory = null;
 		public List<Vare>? VareListe { get; set; }
+
+		public VareListeModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
 
 		public void OnGet()
 		{
-			using HttpClient client = new()
-			{
-				BaseAddress = new Uri("http://localhost:80/")
-			};
+			using HttpClient? client = _clientFactory?.CreateClient("gateway");
 
-			// Henter vareliste. 
-			VareListe = client.GetFromJsonAsync<List<Vare>>("api/vare").Result;
+			try
+			{
+				// Henter vareliste
+				VareListe = client?.GetFromJsonAsync<List<Vare>>(
+					"api/vare").Result;
+
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
 		}
 	}
 

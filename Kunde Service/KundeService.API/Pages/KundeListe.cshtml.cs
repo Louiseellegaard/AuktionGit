@@ -4,19 +4,29 @@ using KundeService.Models;
 
 namespace MyApp.Namespace
 {
-    public class KundeListeModel : PageModel
+	public class KundeListeModel : PageModel
     {
+		private readonly IHttpClientFactory? _clientFactory = null;
 		public List<Kunde>? KundeListe { get; set; }
+
+		public KundeListeModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
 
 		public void OnGet()
 		{
-			using HttpClient client = new()
+			using HttpClient? client = _clientFactory?.CreateClient("gateway");
+
+			try
 			{
-				BaseAddress = new Uri("http://localhost:80/")
-			};
-			
-			// Henter kundeliste. 
-			KundeListe = client.GetFromJsonAsync<List<Kunde>>("api/kunde").Result;
+				// Henter kundeliste
+				KundeListe = client?.GetFromJsonAsync<List<Kunde>>(
+					"api/kunde").Result;
+
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+
 		}
 	}
 }
