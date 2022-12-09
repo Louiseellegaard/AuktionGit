@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using AuktionService.Models;
 using AuktionService.Services;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace AuktionService.Controllers;
 
@@ -78,7 +78,7 @@ public class AuktionController : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<Auktion>> Post([FromBody] AuktionDTO AuktionDTO)
 	{
-		_logger.LogDebug("Opretter nyt auktion.");
+		_logger.LogDebug("Opretter ny auktion.");
 
 		Auktion auktion = new()
 		{
@@ -116,7 +116,7 @@ public class AuktionController : ControllerBase
 			auktion.EndTime = AuktionDTO.EndTime;
 			auktion.MinimumPrice = AuktionDTO.MinimumPrice;
 
-		_logger.LogDebug("Opdaterer auktion med nye v�rdier.");
+		_logger.LogDebug("Opdaterer auktion med nye værdier.");
 
 		await _dataService
 			.Update(id, auktion);

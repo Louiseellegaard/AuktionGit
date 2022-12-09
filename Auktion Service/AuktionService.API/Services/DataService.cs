@@ -29,22 +29,22 @@ namespace AuktionService.Services
             // Find alle auktioner.
             return await _db
                 .AuktionCollection
-                .Find(b => true)
+                .Find(a => true)
                 .ToListAsync();
         }
 
         public async Task<Auktion> Get(string id)
         {
-            // Find et enkelt auktion.
+            // Find en enkelt auktion.
             return await _db
                 .AuktionCollection
-                .Find(b => b.AuctionId == id)
+                .Find(a => a.AuctionId == id)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<Auktion> Create(Auktion auktion)
         {
-            // Lav et auktion.
+            // Lav en auktion.
             await _db
                 .AuktionCollection
                 .InsertOneAsync(auktion);
@@ -54,10 +54,10 @@ namespace AuktionService.Services
 
         public async Task<Auktion> Update(string id, Auktion Auktion)
         {
-            // Opdater et auktion.
+            // Opdater en auktion.
             await _db
                 .AuktionCollection
-                .ReplaceOneAsync(b => b.AuctionId == id, Auktion);
+                .ReplaceOneAsync(a => a.AuctionId == id, Auktion);
 
             return Auktion;
         }
@@ -67,7 +67,7 @@ namespace AuktionService.Services
             // Fjern en auktion.
             await _db
                 .AuktionCollection
-                .DeleteOneAsync(b => b.AuctionId == id);
+                .DeleteOneAsync(a => a.AuctionId == id);
         }
     }
 }

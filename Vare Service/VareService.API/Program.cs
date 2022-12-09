@@ -1,6 +1,5 @@
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-
 using VareService.Services;
 
 var builder = WebApplication.CreateBuilder(args);

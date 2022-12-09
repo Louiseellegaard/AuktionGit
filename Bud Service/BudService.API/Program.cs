@@ -1,5 +1,5 @@
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-
 using BudService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +13,14 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader()
                .AllowAnyMethod();
     });
+});
+
+// Create globally available HttpClient for accessing the gateway
+builder.Services.AddHttpClient("gateway", client =>
+{
+	client.BaseAddress = new Uri("http://gateway:4000/");
+	client.DefaultRequestHeaders.Add(
+		HeaderNames.Accept, "application/json");
 });
 
 // Add services to the container.
@@ -47,5 +55,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapRazorPages();
 
 app.Run();
