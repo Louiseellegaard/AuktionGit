@@ -3,10 +3,10 @@ name: Docker Image CI for AuktionAPI
 on:
   push:
     branches: [ "develop" ]
-    paths: [ "AuktionService/AuktionService.API/**" ]
+    paths: [ "Auktion Service/AuktionService.API/**" ]
   pull_request:
     branches: [ "develop" ]
-    paths: [ "AuktionService/AuktionService.API/**" ]
+    paths: [ "Auktion Service/AuktionService.API/**" ]
 
 jobs:
 
@@ -28,7 +28,7 @@ jobs:
     - name: Build the Docker image for AuktionAPI 
       env: 
         DOCKER_USER: ${{ secrets.DOCKER_USER }} 
-      run: docker build . --file "AuktionService/AuktionService.API/Dockerfile" --tag ${DOCKER_USER}/auktionapi:latest-dev
+      run: docker build . --file "Auktion Service/AuktionService.API/Dockerfile" --tag ${DOCKER_USER}/auktionapi:latest-dev
       
     - name: Push Docker image to Docker Hub 
       env: 
