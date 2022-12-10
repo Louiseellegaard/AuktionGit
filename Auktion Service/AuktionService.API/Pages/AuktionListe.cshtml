@@ -80,18 +80,6 @@
 						<tr>
 							<td>@auktion.AuctionId</td>
 							<td>@auktion.Description</td>
-
-							@if (Model.Vare! is not null)
-							{
-								<td>@Model.Vare!.ProductId</td>
-								<td>@Model.Vare!.Category</td>
-
-								Model.Vare = null!;
-							}
-							else
-							{
-								await Model.HentVare(auktion.ProductId!)!;
-							}
 						</tr>
 					}
 				}

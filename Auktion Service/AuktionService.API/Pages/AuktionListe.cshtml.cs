@@ -9,7 +9,6 @@ namespace MyApp.Namespace
 	{
 		private readonly IHttpClientFactory? _clientFactory = null;
 		public List<Auktion>? AuktionListe { get; set; }
-		public Vare? Vare { get; set; }
 
 		public AuktionListeModel(IHttpClientFactory clientFactory)
 		{
@@ -31,20 +30,5 @@ namespace MyApp.Namespace
 			}
 
 		}
-
-		public async Task? HentVare(string id)
-		{
-			using HttpClient? client = _clientFactory?.CreateClient("gateway")!;
-
-			try
-			{
-				Vare = await client.GetFromJsonAsync<Vare>($"api/vare/{id}")!;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-			}
-		}
-
 	}
 }
