@@ -29,8 +29,8 @@ namespace AuktionService.Services
 			// Henter bud-collection fra '_mongoDatabase'
 			AuktionCollection = _mongoDatabase.GetCollection<Auktion>("Auktion");
 
-			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase);
-			_logger.LogInformation("Benytter collection {collection}", AuktionCollection);
+			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase.DatabaseNamespace.DatabaseName);
+			_logger.LogInformation("Benytter collection {collection}", AuktionCollection.CollectionNamespace.CollectionName);
 		}
     }
 }
