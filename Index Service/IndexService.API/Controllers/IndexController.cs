@@ -22,7 +22,7 @@ public class IndexController : ControllerBase
 
 
 	// GET: api/AuktionFuld
-	[HttpGet]
+	[HttpGet("Auktioner")]
 	public async Task<ActionResult<IEnumerable<AuktionFuld>>> Get()
 	{
 		using HttpClient? client = _clientFactory?.CreateClient("gateway")!;
@@ -52,7 +52,7 @@ public class IndexController : ControllerBase
 				BuyerId = auktion.BuyerId,
 				ShowRoomId = vare.ShowRoomId,
 				AuctionStart = vare.AuctionStart,
-				AuctionEnd = auktion.EndTime,
+				AuctionEnd = auktion.AuctionEnd,
 				Images = vare.Images
 			};
 
