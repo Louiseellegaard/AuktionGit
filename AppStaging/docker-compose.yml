@@ -25,7 +25,7 @@ services:
      - "80"
   
  indexservice:
-     image: ouiseellegaard/indexapi:latest-dev
+     image: louiseellegaard/indexapi:latest-dev
      hostname: indexservice
      expose:
      - "80"   
