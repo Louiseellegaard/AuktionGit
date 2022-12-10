@@ -27,11 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auktion Service", "Auktion 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuktionService.API", "Auktion Service\AuktionService.API\AuktionService.API.csproj", "{A8E0766F-509F-424E-BD16-FD4EA58F1A23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuktionService.Tests", "Auktion Service\AuktionService.Tests\AuktionService.Tests.csproj", "{12CA23AF-AC92-44F7-AF07-3125BD21076C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuktionService.Tests", "Auktion Service\AuktionService.Tests\AuktionService.Tests.csproj", "{12CA23AF-AC92-44F7-AF07-3125BD21076C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Index Service", "Index Service", "{B34C582A-79AF-4F3F-9A11-B7488E39FEBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndexService.API", "Index Service\IndexService.API.csproj", "{E8088063-DD6B-4AA0-B8D5-64144D158808}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndexService.API", "Index Service\IndexService.API\IndexService.API.csproj", "{E8088063-DD6B-4AA0-B8D5-64144D158808}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +67,14 @@ Global
 		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8E0766F-509F-424E-BD16-FD4EA58F1A23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12CA23AF-AC92-44F7-AF07-3125BD21076C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CA23AF-AC92-44F7-AF07-3125BD21076C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CA23AF-AC92-44F7-AF07-3125BD21076C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12CA23AF-AC92-44F7-AF07-3125BD21076C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
