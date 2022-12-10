@@ -88,7 +88,7 @@ public class AuktionController : ControllerBase
 			ProductId = AuktionDTO.ProductId,
 			BuyerId = AuktionDTO.BuyerId,
 			Description = AuktionDTO.Description,
-			EndTime = AuktionDTO.EndTime,
+			AuctionEnd = AuktionDTO.AuctionEnd,
 			MinimumPrice = AuktionDTO.MinimumPrice,
 		};
 
@@ -115,7 +115,7 @@ public class AuktionController : ControllerBase
 			auktion.ProductId = AuktionDTO.ProductId;
 			auktion.BuyerId = AuktionDTO.BuyerId;
 			auktion.Description = AuktionDTO.Description;
-			auktion.EndTime = AuktionDTO.EndTime;
+			auktion.AuctionEnd = AuktionDTO.AuctionEnd;
 			auktion.MinimumPrice = AuktionDTO.MinimumPrice;
 
 		_logger.LogDebug("Opdaterer auktion med nye værdier.");
@@ -183,5 +183,5 @@ public class AuktionController : ControllerBase
 		_logger.LogDebug("Fjerner auktion fra cache.");
 	}
 
-	public record AuktionDTO(string? ProductId, string? BuyerId, string? Description, DateTime EndTime, double MinimumPrice);
+	public record AuktionDTO(string? ProductId, string? BuyerId, string? Description, DateTime? AuctionEnd, double MinimumPrice);
 }

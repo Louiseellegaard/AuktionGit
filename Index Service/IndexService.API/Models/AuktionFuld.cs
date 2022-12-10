@@ -11,8 +11,8 @@ public class AuktionFuld
 	public double ProductValuation { get; set; }
 	public double MinimumPrice { get; set; }
 	public string? BuyerId { get; set; }
-    public int ShowRoomId { get; set; }
-	public DateTime AuctionEnd { get; set; }
-	public string? AuctionStart { get; set; }
+    public int? ShowRoomId { get; set; }
+	public DateTime? AuctionStart { get; set; }
+	public DateTime? AuctionEnd { get; set; }
     public string[]? Images { get; set; }
 }

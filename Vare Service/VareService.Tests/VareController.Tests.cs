@@ -74,7 +74,7 @@ public class VareController_Tests
         Assert.Multiple(() =>
         {
 			Assert.That(result.Value?.Title, Is.EqualTo(vare.Title));
-			Assert.That(result.Value?.AuctionStart, Is.EqualTo(auctionStartTime.ToString()));
+			Assert.That(result.Value?.AuctionStart, Is.EqualTo(auctionStartTime));
         });
     }
 
@@ -118,7 +118,7 @@ public class VareController_Tests
             Description = "Test bord lavet af birk",
             ShowRoomId = 1,
             Valuation = 10.00,
-            AuctionStart = auctionStartTime.ToString(),
+            AuctionStart = auctionStartTime,
             Images = new[] { "image1", "image2" }
         };
         return vare;

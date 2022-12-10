@@ -9,7 +9,7 @@ public class Vare
 	public string? Description { get; set; }
 	public int ShowRoomId { get; set; }
 	public double Valuation { get; set; }
-	public string? AuctionStart { get; set; }
+	public DateTime? AuctionStart { get; set; }
 	public string[]? Images { get; set; }
 }
 

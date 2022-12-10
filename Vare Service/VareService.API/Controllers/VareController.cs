@@ -186,5 +186,5 @@ public class VareController : ControllerBase
 		_logger.LogDebug("Fjerner vare fra cache.");
 	}
 
-	public record VareDTO(ProductCategory Category, string? Title, string? Description, int ShowRoomId, double Valuation, string AuctionStart, string[]? Images);
+	public record VareDTO(ProductCategory Category, string? Title, string? Description, int ShowRoomId, double Valuation, DateTime AuctionStart, string[]? Images);
 }
