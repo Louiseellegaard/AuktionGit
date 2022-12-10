@@ -19,7 +19,7 @@ services:
      - "80"
 
  auktionservice:
-     image: louiseellegaard/auktionapi:latest-dev
+     image: auktiontest:latest
      hostname: auktionservice
      expose:
      - "80"

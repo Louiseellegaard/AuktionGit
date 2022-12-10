@@ -27,7 +27,9 @@ public class AuktionController : ControllerBase
 		var properties = new Dictionary<string, string>();
 		var assembly = typeof(Program).Assembly;
 
-		properties.Add("service", "Catalog");
+		var service = assembly.GetName().Name;
+
+		properties.Add("service", service);
 		var ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(Program).Assembly.Location).ProductVersion ?? "Undefined";
 		properties.Add("version", ver);
 

@@ -14,7 +14,7 @@ public class Auktion
     public DateTime EndTime { get; set; }
     public double MinimumPrice { get; set; }
 
-//constructor - når ny bud objekt, så har objektet allerede et id. 
+    // constructor - når nyt auktion-objekt laves, så opretts objektet med et id. 
     public Auktion()
     {
         AuctionId = ObjectId.GenerateNewId().ToString();
