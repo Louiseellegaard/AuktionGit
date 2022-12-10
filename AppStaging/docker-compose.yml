@@ -25,8 +25,8 @@ services:
      - "80"
   
  indexservice:
-     image: indextest:latest
-     hostname: auktionservice
+     image: ouiseellegaard/indexapi:latest-dev
+     hostname: indexservice
      expose:
      - "80"   
   
