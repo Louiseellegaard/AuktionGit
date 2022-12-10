@@ -27,8 +27,10 @@ public class AuktionController : ControllerBase
 		var properties = new Dictionary<string, string>();
 		var assembly = typeof(Program).Assembly;
 
-		properties.Add("service", "Catalog");
-		var ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(Program).Assembly.Location).ProductVersion ?? "Undefined";
+		var service = assembly.GetName().Name ?? "Undefined";
+		properties.Add("service", service!);
+
+		var ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion ?? "Undefined";
 		properties.Add("version", ver);
 
 		var feature = HttpContext.Features.Get<IHttpConnectionFeature>();
