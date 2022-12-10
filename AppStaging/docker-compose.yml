@@ -24,6 +24,12 @@ services:
      expose:
      - "80"
   
+ indexservice:
+     image: indextest:latest
+     hostname: auktionservice
+     expose:
+     - "80"   
+  
   
  nginx:
      image: nginx:latest
@@ -36,6 +42,7 @@ services:
       - vareservice
       - budservice
       - auktionservice
+      - indexservice
       
      ports:
       - "4000:4000"
