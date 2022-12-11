@@ -8,14 +8,14 @@ namespace IndexService.Pages
 	public class AuktionPageModel : PageModel
 	{
 		[Parameter]
-		public string AuktionId { get; set; }
+		public string AuktionId { get; set; } = null;
 		public AuktionFuld? Auktion { get; set; }
 
 		private readonly IHttpClientFactory? _clientFactory = null;
 
 		public AuktionPageModel(IHttpClientFactory clientFactory)
 		{
-			Console.WriteLine(AuktionId);
+			Console.WriteLine("AuktionId: " + AuktionId);
 			_clientFactory = clientFactory;
 		}
 
