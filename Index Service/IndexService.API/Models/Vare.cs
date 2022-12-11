@@ -2,7 +2,6 @@ namespace IndexService.Models;
 
 public class Vare
 {
-
 	public string? ProductId { get; set; }
 	public ProductCategory Category { get; set; }
 	public string? Title { get; set; }

@@ -7,7 +7,7 @@ namespace MyApp.Namespace
 	public class AuktionerModel : PageModel
 	{
 		private readonly IHttpClientFactory? _clientFactory = null;
-		public List<AuktionFuld>? Auktioner { get; set; }
+		public List<AuktionVare>? Auktioner { get; set; }
 
 		public AuktionerModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
 
@@ -18,8 +18,8 @@ namespace MyApp.Namespace
 			try
 			{
 				// Henter auktioner
-				Auktioner = client?.GetFromJsonAsync<List<AuktionFuld>>(
-					"api/index/auktioner").Result;
+				Auktioner = client?.GetFromJsonAsync<List<AuktionVare>>(
+					"api/index/auktion").Result;
 
 			}
 			catch (Exception ex)

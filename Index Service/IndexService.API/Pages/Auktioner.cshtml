@@ -70,7 +70,6 @@
 						<th>Produktbeskrivelse</th>
 						<th>Vurderingspris</th>
 						<th>Minimumspris</th>
-						<th>Bud</th>
 						<th>Starttid</th>
 						<th>Sluttid</th>
 						<th>Billeder</th>
@@ -89,11 +88,10 @@
 								<td>@auktion.ProductDescription</td>
 								<td>@auktion.ProductValuation</td>
 								<td>@auktion.MinimumPrice</td>
-								<td>@auktion.Bid</td>
 								<td>@auktion.AuctionStart</td>
 								<td>@auktion.AuctionEnd</td>
 								<td>@auktion.Images</td>
-								<td><a href=$"/indexservice/auktion/{auktion.AuctionId}" class="btn btn-primary btn-lg active" role="button">Byd</a></td>
+								<td><a href=$"/indexservice/auktion/{@auktion.AuctionId}" class="btn btn-primary btn-sm active" role="button">Byd</a></td>
 							</tr>
 						}
 					}

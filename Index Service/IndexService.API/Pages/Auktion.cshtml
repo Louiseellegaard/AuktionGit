@@ -1,12 +1,11 @@
-@page "/indexservice/auktion1"
-@model MyApp.Namespace.AuktionerModel
-
+@page "/indexservice/auktion/{auktionId}"
+@model IndexService.Pages.AuktionPageModel
+@{
+}
 
 <!DOCTYPE html>
 
-
 <html>
-
 
 <head>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -66,37 +65,131 @@
 		<div class="table-responsive">
 			<table class="table table-light table-hover">
 				<thead>
+					@*
 					<tr>
-						<th>Auktion</th>
-						<th>Beskrivelse</th>
-						<th>Produkt</th>
-						<th>Produktbeskrivelse</th>
-						<th>Vurderingspris</th>
-						<th>Minimumspris</th>
-						<th>Bud</th>
-						<th>Starttid</th>
-						<th>Sluttid</th>
-						<th>Billeder</th>
+					<th>Auktion</th>
+					<th>Beskrivelse</th>
+					<th>Produkt</th>
+					<th>Produktbeskrivelse</th>
+					<th>Vurderingspris</th>
+					<th>Minimumspris</th>
+					<th>Bud</th>
+					<th>Starttid</th>
+					<th>Sluttid</th>
+					<th>Billeder</th>
 					</tr>
+					*@
 				</thead>
 				<tbody>
-					@if (Model.Auktioner! is not null)
+					@if (Model.Auktion is not null)
 					{
-						@foreach (var auktion in Model.Auktioner!)
-						{
-							<tr>
-								<td>@auktion.AuctionId</td>
-								<td>@auktion.AuctionDescription</td>
-								<td>@auktion.ProductTitle</td>
-								<td>@auktion.ProductDescription</td>
-								<td>@auktion.ProductValuation</td>
-								<td>@auktion.MinimumPrice</td>
-								<td>@auktion.Bid</td>
-								<td>@auktion.AuctionStart</td>
-								<td>@auktion.AuctionEnd</td>
-								<td>@auktion.Images</td>
-							</tr>
-						}
+						<tr>
+							<td>
+								<div id="ProductImages">
+									@Model.Auktion.Images
+								</div>
+							</td>
+							<td>
+								<h2>
+									<span id="ProductTitleLabel">
+										@Model.Auktion.ProductTitle
+									</span>
+								</h2>
+								<div class="topContent">
+									<div class="productInfo">
+										<span id="ProductPhraseLabel">
+											Varenummer
+										</span>
+										:
+										<span id="ProductIdLabel">
+											@Model.Auktion.ProductId
+										</span>
+									</div>
+								</div>
+								<div id="Panel">
+									<table class="panel">
+										<tbody>
+											<tr>
+												<td>
+													<span id="AuctionEndPhraseLabel">
+														Model.Auktion er færdig
+													</span>
+													:
+													<span id="AuctionEndLabel">
+														@Model.Auktion.AuctionEnd
+													</span>
+												</td>
+												<td>
+													<div id="PriceInfoPanel">
+														<table>
+															<tbody>
+																<tr>
+																	<td>
+																		<span id="BidLabel">
+																			Bud
+																		</span>
+																		:
+																	</td>
+																	<td>
+																		<span id="BidCurrencyLabel">
+																			DKK
+																		</span>
+																	</td>
+																	<td>
+																		<span id=BidAmountLabel>
+																			@Model.Auktion.Bid
+																		</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<span id="ValuationLabel">
+																			Vurdering
+																		</span>
+																		:
+																	</td>
+																	<td>
+																		<span id="ValuationCurrencyLabel">
+																			DKK
+																		</span>
+																	</td>
+																	<td>
+																		<span id=ValuationAmountLabel>
+																			@Model.Auktion.ProductValuation
+																		</span>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div>
+									<h3>
+										<span id="ProductDescriptionLabel">
+											Beskrivelse
+										</span>
+									</h3>
+									<span id="ProductDescription">
+										@Model.Auktion.ProductDescription
+									</span>
+								</div>
+								<div id="BidPanel">
+									<h4>
+										<span id="BidHeaderPhraseLabel">
+											Angiv bud på varen
+										</span>
+									</h4>
+									<div class="bidTableBox">
+									</div>
+								</div>
+								<div id="ShowRoomInfoPanel">
+								</div>
+							</td>
+						</tr>
 					}
 				</tbody>
 			</table>
@@ -105,8 +198,6 @@
 	</div>
 
 </body>
-
-
 
 </html>
 

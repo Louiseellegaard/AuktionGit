@@ -1,15 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using IndexService.Models;
+using Microsoft.AspNetCore.Components;
 
-namespace MyApp.Namespace
+namespace IndexService.Pages
 {
-	public class AuktionsBudModel : PageModel
+	public class AuktionPageModel : PageModel
 	{
 		private readonly IHttpClientFactory? _clientFactory = null;
+		public string AuktionId { get; set; }
 		public AuktionFuld? Auktion { get; set; }
 
-		public AuktionsBudModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
+		public AuktionPageModel(IHttpClientFactory clientFactory, string auktionId)
+		{
+			_clientFactory = clientFactory;
+			AuktionId = auktionId;
+		}
 
 		public void OnGet()
 		{
@@ -17,10 +23,9 @@ namespace MyApp.Namespace
 
 			try
 			{
-				// Henter vare
+				// Henter auktion
 				Auktion = client?.GetFromJsonAsync<AuktionFuld>(
-					"api/index/auktioner").Result;
-
+					$"api/index/auktion/{AuktionId}").Result;
 			}
 			catch (Exception ex)
 			{
