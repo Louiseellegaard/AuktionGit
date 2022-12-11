@@ -15,6 +15,7 @@ namespace IndexService.Pages
 
 		public AuktionPageModel(IHttpClientFactory clientFactory)
 		{
+			Console.WriteLine(AuktionId);
 			_clientFactory = clientFactory;
 		}
 

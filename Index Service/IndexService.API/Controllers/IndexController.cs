@@ -95,9 +95,9 @@ public class IndexController : ControllerBase
 			AuctionStart = vare.AuctionStart,
 			AuctionEnd = auktion.AuctionEnd,
 			Images = vare.Images,
-			//BidId = "1",
-			//Bid = 9999.99999,
-			//BidDate = DateTime.UtcNow
+			BidId = "1",
+			Bid = 9999.99999,
+			BidDate = DateTime.UtcNow
 		};
 		return auktionFuld;
 	}
