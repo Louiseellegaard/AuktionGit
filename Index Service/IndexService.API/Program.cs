@@ -1,5 +1,6 @@
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using IndexService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 });
+
+builder.Services.AddSingleton<IMessageService, MessageService>();
 
 var app = builder.Build();
 
