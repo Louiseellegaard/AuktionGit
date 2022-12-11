@@ -14,6 +14,9 @@ public class Auktion
     public DateTime? AuctionEnd { get; set; }
     public double MinimumPrice { get; set; }
 
+
+
+
     // constructor - når nyt auktion-objekt laves, så opretts objektet med et id. 
     public Auktion()
     {
