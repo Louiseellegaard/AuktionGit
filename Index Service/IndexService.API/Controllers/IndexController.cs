@@ -23,7 +23,6 @@ public class IndexController : ControllerBase
 		_memoryCache = memoryCache;
 	}
 
-
 	// GET: api/index/Auktion
 	[HttpGet("Auktion")]
 	public async Task<ActionResult<IEnumerable<AuktionVare>>> Get()
