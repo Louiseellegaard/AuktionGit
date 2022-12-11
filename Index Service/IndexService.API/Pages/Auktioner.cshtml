@@ -1,4 +1,4 @@
-﻿@page "/indexservice/auktioner"
+﻿@page "/indexservice/auktion"
 @model MyApp.Namespace.AuktionerModel
 
 <!DOCTYPE html>
@@ -91,7 +91,7 @@
 								<td>@auktion.AuctionStart</td>
 								<td>@auktion.AuctionEnd</td>
 								<td>@auktion.Images</td>
-								<td><a href=$"/indexservice/auktion/{@auktion.AuctionId}" class="btn btn-primary btn-sm active" role="button">Byd</a></td>
+								<td><a href="/auktion/{@auktion.AuctionId}" class="btn btn-primary btn-sm active" role="button">Byd</a></td>
 							</tr>
 						}
 					}
