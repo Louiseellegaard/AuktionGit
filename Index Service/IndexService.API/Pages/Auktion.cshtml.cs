@@ -1,13 +1,14 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using IndexService.Models;
-using Microsoft.AspNetCore.Components;
 
 namespace IndexService.Pages
 {
 	public class AuktionPageModel : PageModel
 	{
-		public string AuktionId { get; set; }
+		[BindProperty(SupportsGet = true)]
+		public string? AuktionId { get; set; }
 		public AuktionFuld? Auktion { get; set; }
 
 		private readonly IHttpClientFactory? _clientFactory = null;
@@ -17,10 +18,8 @@ namespace IndexService.Pages
 			_clientFactory = clientFactory;
 		}
 
-		public void OnGet(string _auktionId)
+		public void OnGet()
 		{
-			Console.WriteLine("AuktionId: " + AuktionId);
-			AuktionId = _auktionId;
 			Console.WriteLine("AuktionId: " + AuktionId);
 
 			using HttpClient? client = _clientFactory?.CreateClient("gateway");
