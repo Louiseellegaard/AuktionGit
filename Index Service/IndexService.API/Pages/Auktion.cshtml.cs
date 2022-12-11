@@ -7,14 +7,16 @@ namespace IndexService.Pages
 {
 	public class AuktionPageModel : PageModel
 	{
-		private readonly IHttpClientFactory? _clientFactory = null;
+		[Parameter]
 		public string AuktionId { get; set; }
 		public AuktionFuld? Auktion { get; set; }
 
-		public AuktionPageModel(IHttpClientFactory clientFactory, string auktionId)
+		private readonly IHttpClientFactory? _clientFactory = null;
+
+		public AuktionPageModel(IHttpClientFactory clientFactory, string AuktionId)
 		{
 			_clientFactory = clientFactory;
-			AuktionId = auktionId;
+			this.AuktionId = AuktionId;
 		}
 
 		public void OnGet()
