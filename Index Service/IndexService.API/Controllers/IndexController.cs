@@ -17,7 +17,7 @@ public class IndexController : ControllerBase
 
 	public IndexController(ILogger<IndexController> logger, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
 	{
-		_messageService = messageService;
+		//_messageService = messageService;
 		_clientFactory = clientFactory;
 		_logger = logger;
 		_memoryCache = memoryCache;
@@ -64,6 +64,44 @@ public class IndexController : ControllerBase
 			
 		}
 		return auktionFuldListe;
+	}
+
+	// GET: api/index/Auktioner
+	[HttpGet("BudAuktion/{id}")]
+	public async Task<ActionResult<BudAuktion>> Get(string id)
+	{
+		using HttpClient? client = _clientFactory?.CreateClient("gateway")!;
+
+		// Laver en liste over alle auktioner
+		var auktion = await client.GetFromJsonAsync<Auktion>($"api/auktion/{id}");
+
+		
+		// Henter den tilsvarende vare, der knytter sig til den gældende auktion
+		var vare = await client.GetFromJsonAsync<Vare>($"api/vare/{auktion.ProductId}");
+			
+			//Bud? bud = await client.GetFromJsonAsync<Bud>($"api/bud/{bud.BidId}");
+			//Kunde? kunde = await client.GetFromJsonAsync<Kunde>($"api/kunde/{auktion.BuyerId}");
+
+			// Opretter et nyt objekt, der 'merger' auktion og varen i ét
+			BudAuktion budauktion = new()
+			{ 
+				AuctionId = auktion.AuctionId,
+				AuctionDescription = auktion.Description,
+				ProductId = auktion.ProductId,
+				ProductTitle = vare.Title,
+				ProductDescription = vare.Description,
+				ProductValuation = vare.Valuation,
+				MinimumPrice = auktion.MinimumPrice,
+				BuyerId = auktion.BuyerId,
+				ShowRoomId = vare.ShowRoomId,
+				AuctionStart = vare.AuctionStart,
+				AuctionEnd = auktion.AuctionEnd,
+				Images = vare.Images,
+				Date = DateTime.UtcNow,
+				Bid = 9999.99999,
+				BidId = "1"
+		};
+		return budauktion;
 	}
 
 	// POST api/index/
