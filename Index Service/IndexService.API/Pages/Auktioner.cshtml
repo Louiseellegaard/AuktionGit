@@ -59,7 +59,7 @@
 			<h1>Auktioner</h1>
 		</div>
 		<hr />
-		<p>Alle aukioner</p>
+		<p>Alle auktioner</p>
 		<div class="table-responsive">
 			<table class="table table-light table-hover">
 				<thead>
@@ -74,6 +74,7 @@
 						<th>Starttid</th>
 						<th>Sluttid</th>
 						<th>Billeder</th>
+						<th>Byd</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -92,6 +93,7 @@
 								<td>@auktion.AuctionStart</td>
 								<td>@auktion.AuctionEnd</td>
 								<td>@auktion.Images</td>
+								<td><a href="/indexservice/auktionsbud" class="btn btn-primary btn-lg active" role="button">Byd på vare</a></td>
 							</tr>
 						}
 					}
