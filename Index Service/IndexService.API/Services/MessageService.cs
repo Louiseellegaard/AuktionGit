@@ -20,16 +20,21 @@ namespace IndexService.Services
 
         public MessageService(IConfiguration configuration)
         {
-            var mqhostname = configuration["BidBrokerHost"];
+            var mqhostname = "localhost";
 
-            // Hvis mphostname er tom, så falder vi tilbage på localhost. Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
-            if (string.IsNullOrEmpty(mqhostname))
-            {
-                mqhostname = "localhost";
-            }
+            // // Hvis mphostname er tom, så falder vi tilbage på localhost. Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
+            // if (string.IsNullOrEmpty(mqhostname))
+            // {
+            //     mqhostname = "localhost";
+            // }
+            
+            Console.WriteLine("-----------1----------------------------------------------");
 
             var factory = new ConnectionFactory { HostName = mqhostname };
             _connection = factory.CreateConnection();
+
+            Console.WriteLine("-----------2----------------------------------------------");
+
         }
 
         public void Enqueue(Bud bud)

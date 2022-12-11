@@ -25,7 +25,7 @@ services:
      - "80"
   
  indexservice:
-     image: indexapi:latest
+     image: louiseellegaard/indexapi:latest-dev
      hostname: indexservice
      expose:
      - "80"   
@@ -43,13 +43,13 @@ services:
       - budservice
       - auktionservice
       - indexservice
-      
      ports:
       - "4000:4000"
     
- rabbitmq-dev:
+ rabbitmq:
      image: rabbitmq:management
-     ports:
+     hostname: "rabbitmq"
+     expose:
       - "15672:15672"
       - "5672:5672"
 

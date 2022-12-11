@@ -10,12 +10,12 @@ namespace IndexService.Controllers;
 [ApiController]
 public class IndexController : ControllerBase
 {
-	private readonly IMessageService _messageService;
+	// private readonly IMessageService _messageService;
 	private readonly ILogger<IndexController> _logger;
 	private readonly IMemoryCache _memoryCache;
 	private readonly IHttpClientFactory? _clientFactory = null;
 
-	public IndexController(IMessageService messageService, ILogger<IndexController> logger, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+	public IndexController(ILogger<IndexController> logger, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
 	{
 		_messageService = messageService;
 		_clientFactory = clientFactory;
@@ -24,7 +24,7 @@ public class IndexController : ControllerBase
 	}
 
 
-	// GET: api/AuktionFuld
+	// GET: api/index/Auktioner
 	[HttpGet("Auktioner")]
 	public async Task<ActionResult<IEnumerable<AuktionFuld>>> Get()
 	{
@@ -65,19 +65,20 @@ public class IndexController : ControllerBase
 		}
 		return auktionFuldListe;
 	}
-  // POST api/<BookingController>
-        [HttpPost]
-        public void Post(string auctionId, string buyerId, DateTime date, double bid)
-        {
-            var bud = new Bud()
-            {
-                AuctionId = auctionId,
-                BuyerId = buyerId,
-                Date = date,
-                Bid = bid
-            };
 
-            _messageService.Enqueue(bud);
-		}
+	// POST api/index/
+	[HttpPost]
+	public void Post(string auctionId, string buyerId, DateTime date, double bid)
+	{
+		var bud = new Bud()
+		{
+			AuctionId = auctionId,
+			BuyerId = buyerId,
+			Date = date,
+			Bid = bid
+		};
+
+		// _messageService.Enqueue(bud);
+	}
         
 	}

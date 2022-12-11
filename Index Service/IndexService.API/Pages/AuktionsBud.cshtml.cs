@@ -4,12 +4,12 @@ using IndexService.Models;
 
 namespace MyApp.Namespace
 {
-	public class AuktionerModel : PageModel
+	public class AuktionsBudModel : PageModel
 	{
 		private readonly IHttpClientFactory? _clientFactory = null;
-		public List<AuktionFuld>? Auktioner { get; set; }
+		public AuktionFuld? Auktion { get; set; }
 
-		public AuktionerModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
+		public AuktionsBudModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
 
 		public void OnGet()
 		{
@@ -17,8 +17,8 @@ namespace MyApp.Namespace
 
 			try
 			{
-				// Henter auktioner
-				Auktioner = client?.GetFromJsonAsync<List<AuktionFuld>>(
+				// Henter vare
+				Auktion = client?.GetFromJsonAsync<AuktionFuld>(
 					"api/index/auktioner").Result;
 
 			}
