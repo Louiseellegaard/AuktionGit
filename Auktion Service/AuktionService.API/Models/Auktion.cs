@@ -16,7 +16,6 @@ public class Auktion
 
 
 
-
     // constructor - når nyt auktion-objekt laves, så opretts objektet med et id. 
     public Auktion()
     {
