@@ -13,10 +13,9 @@ namespace IndexService.Pages
 
 		private readonly IHttpClientFactory? _clientFactory = null;
 
-		public AuktionPageModel(IHttpClientFactory clientFactory, string AuktionId)
+		public AuktionPageModel(IHttpClientFactory clientFactory)
 		{
 			_clientFactory = clientFactory;
-			this.AuktionId = AuktionId;
 		}
 
 		public void OnGet()
