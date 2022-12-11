@@ -7,20 +7,22 @@ namespace IndexService.Pages
 {
 	public class AuktionPageModel : PageModel
 	{
-		[Parameter]
-		public string AuktionId { get; set; } = null;
+		public string AuktionId { get; set; }
 		public AuktionFuld? Auktion { get; set; }
 
 		private readonly IHttpClientFactory? _clientFactory = null;
 
 		public AuktionPageModel(IHttpClientFactory clientFactory)
 		{
-			Console.WriteLine("AuktionId: " + AuktionId);
 			_clientFactory = clientFactory;
 		}
 
-		public void OnGet()
+		public void OnGet(string _auktionId)
 		{
+			Console.WriteLine("AuktionId: " + AuktionId);
+			AuktionId = _auktionId;
+			Console.WriteLine("AuktionId: " + AuktionId);
+
 			using HttpClient? client = _clientFactory?.CreateClient("gateway");
 
 			try
