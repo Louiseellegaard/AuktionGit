@@ -46,7 +46,7 @@ services:
      environment:
      - BidBrokerHost=rabbitmq
      depends_on:
-      - rabbitmq
+     - rabbitmq
      expose:
      - "80"
 

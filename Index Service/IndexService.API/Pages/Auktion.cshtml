@@ -14,10 +14,6 @@
 	<meta name="viewport" content="width=device-width" />
 	<title>Auktion</title>
 	<style>
-		table {
-						border: solid 1px;
-		}
-
 		.box {
 						display: flex;
 						align-items: center;
@@ -63,22 +59,8 @@
 		<hr />
 		<p>Giv dit bud</p>
 		<div class="table-responsive">
-			<table class="table table-light">
+			<table class="table table-light table-borderless">
 				<thead>
-					@*
-					<tr>
-					<th>Auktion</th>
-					<th>Beskrivelse</th>
-					<th>Produkt</th>
-					<th>Produktbeskrivelse</th>
-					<th>Vurderingspris</th>
-					<th>Minimumspris</th>
-					<th>Bud</th>
-					<th>Starttid</th>
-					<th>Sluttid</th>
-					<th>Billeder</th>
-					</tr>
-					*@
 				</thead>
 				<tbody>
 					@if (Model.Auktion is not null)
@@ -107,12 +89,12 @@
 									</div>
 								</div>
 								<div id="Panel">
-									<table class="panel">
+									<table class="table panel">
 										<tbody>
 											<tr>
 												<td>
 													<span id="AuctionEndPhraseLabel">
-														Model.Auktion er færdig
+														Auktion er færdig
 													</span>
 													:
 													<span id="AuctionEndLabel">
