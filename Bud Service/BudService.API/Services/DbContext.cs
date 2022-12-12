@@ -6,14 +6,14 @@ namespace BudService.Services
 {
     public interface IDbContext
     {
-        IMongoCollection<Bud> Collection { get; }
+        IMongoCollection<Bud> BudCollection { get; }
     }
 
     public class DbContext : IDbContext
     {
 		private ILogger<DbContext> _logger;
 		private IConfiguration _config;
-		public IMongoCollection<Bud> Collection { get; }
+		public IMongoCollection<Bud> BudCollection { get; }
 
 		public DbContext(ILogger<DbContext> logger, IConfiguration config)
 		{
@@ -30,10 +30,10 @@ namespace BudService.Services
 			var _mongoDatabase = _mongoClient.GetDatabase(_config["Database"]);
 
 			// Henter collection fra environment i docker-compose
-			Collection = _mongoDatabase.GetCollection<Bud>(_config["Collection"]);
+			BudCollection = _mongoDatabase.GetCollection<Bud>(_config["Collection"]);
 
 			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase.DatabaseNamespace.DatabaseName);
-			_logger.LogInformation("Benytter collection {collection}", Collection.CollectionNamespace.CollectionName);
+			_logger.LogInformation("Benytter collection {collection}", BudCollection.CollectionNamespace.CollectionName);
 		}
     }
 }

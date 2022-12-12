@@ -6,14 +6,14 @@ namespace KundeService.Services
 {
 	public interface IDbContext
 	{
-		IMongoCollection<Kunde> Collection { get; }
+		IMongoCollection<Kunde> KundeCollection { get; }
 	}
 
 	public class DbContext : IDbContext
 	{
 		private ILogger<DbContext> _logger;
 		private IConfiguration _config;
-		public IMongoCollection<Kunde> Collection { get; }
+		public IMongoCollection<Kunde> KundeCollection { get; }
 
 		public DbContext(ILogger<DbContext> logger, IConfiguration config)
 		{
@@ -30,10 +30,10 @@ namespace KundeService.Services
 			var _mongoDatabase = _mongoClient.GetDatabase(_config["Database"]);
 
 			// Henter collection fra environment i docker-compose
-			Collection = _mongoDatabase.GetCollection<Kunde>(_config["Collection"]);
+			KundeCollection = _mongoDatabase.GetCollection<Kunde>(_config["Collection"]);
 
 			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase.DatabaseNamespace.DatabaseName);
-			_logger.LogInformation("Benytter collection {collection}", Collection.CollectionNamespace.CollectionName);
+			_logger.LogInformation("Benytter collection {collection}", KundeCollection.CollectionNamespace.CollectionName);
 		}
 	}
 }
