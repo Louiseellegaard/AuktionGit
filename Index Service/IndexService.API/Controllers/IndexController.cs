@@ -10,14 +10,14 @@ namespace IndexService.Controllers;
 [ApiController]
 public class IndexController : ControllerBase
 {
-	// private readonly IMessageService _messageService;
+	private readonly IMessageService _messageService;
 	private readonly ILogger<IndexController> _logger;
 	private readonly IMemoryCache _memoryCache;
 	private readonly IHttpClientFactory? _clientFactory = null;
 
-	public IndexController(ILogger<IndexController> logger, IMemoryCache memoryCache, IHttpClientFactory clientFactory)
+	public IndexController(ILogger<IndexController> logger, IMemoryCache memoryCache, IHttpClientFactory clientFactory, IMessageService messageService)
 	{
-		//_messageService = messageService;
+		_messageService = messageService;
 		_clientFactory = clientFactory;
 		_logger = logger;
 		_memoryCache = memoryCache;
@@ -106,6 +106,8 @@ public class IndexController : ControllerBase
 	[HttpPost]
 	public void Post(string auctionId, string buyerId, DateTime date, double bid)
 	{
+
+		// tilføj logg
 		var bud = new Bud()
 		{
 			AuctionId = auctionId,
@@ -114,7 +116,7 @@ public class IndexController : ControllerBase
 			Bid = bid
 		};
 
-		// _messageService.Enqueue(bud);
+		_messageService.Enqueue(bud);
 	}
 
 }

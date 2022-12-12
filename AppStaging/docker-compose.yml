@@ -3,34 +3,60 @@ services:
  vareservice:
      image: louiseellegaard/vareapi:latest-dev
      hostname: vareservice
+     environment:
+      - ConnectionString=mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority
+      - Database=Auktiondb
+      - Collection=Vare
      expose:
      - "80"
 
  budservice:
      image: louiseellegaard/budapi:latest-dev
      hostname: budservice
+     environment:
+      - ConnectionString=mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority
+      - Database=Auktiondb
+      - Collection=Bud
      expose:
      - "80"
 
  kundeservice:
      image: louiseellegaard/kundeapi:latest-dev
      hostname: kundeservice
+     environment:
+      - ConnectionString=mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority
+      - Database=Auktiondb
+      - Collection=Kunde
      expose:
      - "80"
 
  auktionservice:
      image: louiseellegaard/auktionapi:latest-dev
      hostname: auktionservice
+     environment:
+      - ConnectionString=mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority
+      - Database=Auktiondb
+      - Collection=Auktion
      expose:
      - "80"
-  
+
  indexservice:
      image: louiseellegaard/indexapi:latest-dev
      hostname: indexservice
+     environment:
+     - BidBrokerHost=rabbitmq
+     depends_on:
+      - rabbitmq
      expose:
-     - "80"   
-  
-  
+     - "80"
+
+ rabbitmq:
+     image: rabbitmq:management
+     hostname: "rabbitmq"
+     expose:
+      - "5672:5672"
+    # - "15672:15672"
+
  nginx:
      image: nginx:latest
      container_name: "gateway"
@@ -45,13 +71,6 @@ services:
       - indexservice
      ports:
       - "4000:4000"
-    
- rabbitmq:
-     image: rabbitmq:management
-     hostname: "rabbitmq"
-     expose:
-      - "15672:15672"
-      - "5672:5672"
 
 networks:
   default:

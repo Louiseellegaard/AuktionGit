@@ -6,31 +6,34 @@ namespace VareService.Services
 {
     public interface IDbContext
     {
-        IMongoCollection<Vare> VareCollection { get; }
+        IMongoCollection<Vare> Collection { get; }
     }
 
     public class DbContext : IDbContext
     {
 		private ILogger<DbContext> _logger;
-		public IMongoCollection<Vare> VareCollection { get; }
+		private IConfiguration _config;
+		public IMongoCollection<Vare> Collection { get; }
 
-		public DbContext(ILogger<DbContext> logger)
-        {
+		public DbContext(ILogger<DbContext> logger, IConfiguration config)
+		{
 			_logger = logger;
+			_config = config;
 
-			var _connectionString = "mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority";
+			// Henter ConnectionString fra environment i 'docker-compose.yml'-filen
+			var _connectionString = _config["ConnectionString"];
 
-			// Opretter en 'MongoClient' med forbindelse til MongoDB Atlas
-			var _client = new MongoClient(_connectionString);
+            // Opretter en 'MongoClient' med forbindelse til MongoDB Atlas
+            var _mongoClient = new MongoClient(_connectionString);
 
-			// Henter auktions-databasen fra '_client'
-			var _mongoDatabase = _client.GetDatabase("Auktiondb");
+			// Henter database fra environment i docker-compose
+			var _mongoDatabase = _mongoClient.GetDatabase(_config["Database"]);
 
-			// Henter vare-collection fra '_mongoDatabase'
-			VareCollection = _mongoDatabase.GetCollection<Vare>("Vare");
+			// Henter collection fra environment i docker-compose
+			Collection = _mongoDatabase.GetCollection<Vare>(_config["Collection"]);
 
-			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase);
-			_logger.LogInformation("Benytter collection {collection}", VareCollection);
+			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase.DatabaseNamespace.DatabaseName);
+			_logger.LogInformation("Benytter collection {collection}", Collection.CollectionNamespace.CollectionName);
 		}
     }
 }

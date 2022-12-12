@@ -15,26 +15,32 @@ namespace IndexService.Services
     public class MessageService : IMessageService
     {
         private readonly IConnection _connection;
-
+        private readonly ILogger<MessageService> _logger;
         private static readonly string queueName = "bids";
 
-        public MessageService(IConfiguration configuration)
+        public MessageService(ILogger<MessageService> logger, IConfiguration configuration)
         {
-            var mqhostname = "localhost";
+            _logger = logger;
 
-            // // Hvis mphostname er tom, så falder vi tilbage på localhost. Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
-            // if (string.IsNullOrEmpty(mqhostname))
-            // {
-            //     mqhostname = "localhost";
-            // }
-            
-            Console.WriteLine("-----------1----------------------------------------------");
+            var mqhostname = configuration["BidBrokerHost"];
+
+            // Hvis 'mphostname' er tom, så falder vi tilbage på localhost. Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
+            if (string.IsNullOrEmpty(mqhostname))
+            {
+                Console.WriteLine("Kan ikke hente 'hostname' fra miljø.");
+                _logger.LogInformation("Kan ikke hente 'hostname' fra miljø.");
+
+                mqhostname = "localhost";
+            }
+
+            Console.WriteLine($"Benytter hostname '{mqhostname}'.");
+            _logger.LogInformation("Benytter hostname '{mqhostname}'.", mqhostname);
 
             var factory = new ConnectionFactory { HostName = mqhostname };
             _connection = factory.CreateConnection();
 
-            Console.WriteLine("-----------2----------------------------------------------");
-
+            Console.WriteLine($"Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}'.");
+            _logger.LogInformation("Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}'.", mqhostname);
         }
 
         public void Enqueue(Bud bud)
@@ -49,7 +55,7 @@ namespace IndexService.Services
                                         autoDelete: false,
                                         arguments: null);
 
-                // Serialisering af Booking-objekt
+                // Serialisering af Bud-objekt
                 var body = JsonSerializer.SerializeToUtf8Bytes(bud);
 
                 // Sender 'body'-datastrømmen ind i køen
