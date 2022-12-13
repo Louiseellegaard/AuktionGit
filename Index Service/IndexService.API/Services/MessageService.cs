@@ -1,9 +1,8 @@
 using System.Text;
 using System.Text.Json;
-using IndexService.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-
+using IndexService.Models;
 
 namespace IndexService.Services
 {
@@ -24,23 +23,26 @@ namespace IndexService.Services
 
             var mqhostname = configuration["BidBrokerHost"];
 
-            // Hvis 'mphostname' er tom, så falder vi tilbage på localhost. Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
+            // Hvis 'mphostname' er tom, så falder vi tilbage på localhost.
+            // Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
             if (string.IsNullOrEmpty(mqhostname))
             {
-                Console.WriteLine("Kan ikke hente 'hostname' fra miljø.");
                 _logger.LogInformation("Kan ikke hente 'hostname' fra miljø.");
 
                 mqhostname = "localhost";
             }
 
-            Console.WriteLine($"Benytter hostname '{mqhostname}'.");
-            _logger.LogInformation("Benytter hostname '{mqhostname}'.", mqhostname);
+            var factory = new ConnectionFactory
+            { 
+                HostName = mqhostname,
+                Port = 5672
+            };
 
-            var factory = new ConnectionFactory { HostName = mqhostname };
-            _connection = factory.CreateConnection();
+			_logger.LogInformation("Forsøger at oprette forbindelse til hostname '{mqhostname}' på port '{factory.Port}'.", mqhostname, factory.Port);
 
-            Console.WriteLine($"Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}'.");
-            _logger.LogInformation("Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}'.", mqhostname);
+			_connection = factory.CreateConnection();
+
+            _logger.LogInformation("Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}' på port '{factory.Port}'.", mqhostname, factory.Port);
         }
 
         public void Enqueue(Bud bud)
@@ -64,8 +66,8 @@ namespace IndexService.Services
                                         basicProperties: null,
                                         body: body);
 
-                // Udskriver til konsolen, at vi har sendt en booking
-                Console.WriteLine(" [x] Published bids: {0}", bud.BidId);
+				// Udskriver til logger, at vi har sendt en booking
+				_logger.LogInformation("[x] Publiseret bud: {bud.BidId}", bud.BidId);
             }
         }
     }

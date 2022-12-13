@@ -53,9 +53,10 @@ services:
  rabbitmq:
      image: rabbitmq:management
      hostname: "rabbitmq"
-     expose:
-      - "5672:5672"
-    # - "15672:15672"
+     container_name: "rabbitmq"
+     ports:
+     - "5672:5672"
+     - "15672:15672"
 
  nginx:
      image: nginx:latest
