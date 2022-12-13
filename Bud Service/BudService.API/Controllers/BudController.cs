@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using BudService.Models;
 using BudService.Services;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace BudService.Controllers;
 
@@ -74,6 +74,16 @@ public class BudController : ControllerBase
 			SetInCache(bud);
 		}
 		return bud;
+	}
+
+	// GET: api/Bud/auction=5
+	[HttpGet("auction={id}", Name = "GetByAuction")]
+	public async Task<ActionResult<IEnumerable<Bud>>> GetByAuction(string id)
+	{
+		_logger.LogDebug("Henter liste over alle bud for auktion: '{id}'.", id);
+
+		return await _dataService
+			.GetByAuction(id);
 	}
 
 	// POST: api/Bud

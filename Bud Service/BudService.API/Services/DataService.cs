@@ -8,7 +8,8 @@ namespace BudService.Services
     {
         Task<List<Bud>> Get();
         Task<Bud> Get(string id);
-        Task<Bud> Create(Bud bud);
+        Task<List<Bud>> GetByAuction(string id);
+		Task<Bud> Create(Bud bud);
         Task<Bud> Update(string id, Bud bud);
         Task Delete(string id);
     }
@@ -42,7 +43,16 @@ namespace BudService.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Bud> Create(Bud bud)
+		public async Task<List<Bud>> GetByAuction(string id)
+		{
+			// Find alle bud i for en auktion.
+			return await _db
+				.BudCollection
+				.Find(b => b.AuctionId == id)
+				.ToListAsync();
+		}
+
+		public async Task<Bud> Create(Bud bud)
         {
             // Lav et bud.
             await _db
