@@ -8,7 +8,8 @@ namespace VareService.Services
     {
         Task<List<Vare>> Get();
         Task<Vare> Get(string id);
-        Task<Vare> Create(Vare vare);
+        Task<List<Vare>> GetByCategory(ProductCategory category);
+		Task<Vare> Create(Vare vare);
         Task<Vare> Update(string id, Vare vare);
         Task Delete(string id);
     }
@@ -42,7 +43,16 @@ namespace VareService.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Vare> Create(Vare vare)
+		public async Task<List<Vare>> GetByCategory(ProductCategory category)
+		{
+            // Find alle varer i en kategori.
+			return await _db
+				.VareCollection
+				.Find(v => v.Category == category)
+				.ToListAsync();
+		}
+
+		public async Task<Vare> Create(Vare vare)
         {
             // Lav en vare.
             await _db

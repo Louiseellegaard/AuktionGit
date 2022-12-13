@@ -44,7 +44,7 @@ public class VareController : ControllerBase
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Vare>>> Get()
 	{
-		_logger.LogDebug("Henter liste over alle varer.");
+		_logger.LogInformation("Henter liste over alle varer.");
 
 		return await _dataService
 			.Get();
@@ -54,13 +54,13 @@ public class VareController : ControllerBase
 	[HttpGet("{id}", Name = "Get")]
 	public async Task<ActionResult<Vare>> Get(string id)
 	{
-		_logger.LogDebug("Leder efter vare med id: {id}.", id);
+		_logger.LogInformation("Leder efter vare med id: {id}.", id);
 
 		var vare = GetFromCache(id);
 
 		if (vare is null)
 		{
-			_logger.LogDebug($"Vare findes ikke i cache. Henter fra database.");
+			_logger.LogInformation("Vare med id {id} findes ikke i cache. Henter fra database.", id);
 
 			vare = await _dataService
 				.Get(id);
@@ -70,18 +70,28 @@ public class VareController : ControllerBase
 				return NotFound();
 			}
 
-			_logger.LogDebug($"Gemmer vare i cache.");
+			_logger.LogInformation($"Gemmer vare i cache.");
 
 			SetInCache(vare);
 		}
 		return vare;
 	}
 
+	// GET: api/Vare/category=5
+	[HttpGet("category={category}", Name = "GetByCategory")]
+	public async Task<ActionResult<IEnumerable<Vare>>> GetByCategory(ProductCategory category)
+	{
+		_logger.LogInformation("Henter liste over alle varer i kategorien: '{category}'.", category);
+
+		return await _dataService
+			.GetByCategory(category);
+	}
+
 	// POST: api/Vare
 	[HttpPost]
 	public async Task<ActionResult<Vare>> Post([FromBody] VareDTO vareDTO)
 	{
-		_logger.LogDebug("Opretter ny vare.");
+		_logger.LogInformation("Opretter ny vare.");
 
 		Vare vare = new()
 		{
@@ -104,7 +114,7 @@ public class VareController : ControllerBase
 	[HttpPut("{id}")]
 	public async Task<ActionResult<Vare>> Put(string id, [FromBody] VareDTO vareDTO)
 	{
-		_logger.LogDebug("Leder efter vare med id: {id}.", id);
+		_logger.LogInformation("Leder efter vare med id: {id}.", id);
 
 		var vare = await _dataService
 			.Get(id);
@@ -122,7 +132,7 @@ public class VareController : ControllerBase
 		vare.AuctionStart = vareDTO.AuctionStart;
 		vare.Images = vareDTO.Images;
 
-		_logger.LogDebug("Opdaterer vare med nye værdier.");
+		_logger.LogInformation("Opdaterer vare med nye værdier.");
 
 		await _dataService
 			.Update(id, vare);
@@ -134,7 +144,7 @@ public class VareController : ControllerBase
 	[HttpDelete("{id}")]
 	public async Task<ActionResult<Vare>> Delete(string id)
 	{
-		_logger.LogDebug("Leder efter vare med id: {id}.", id);
+		_logger.LogInformation("Leder efter vare med id: {id}.", id);
 
 		var vare = await _dataService
 			.Get(id);
@@ -144,7 +154,7 @@ public class VareController : ControllerBase
 			return NotFound();
 		}
 
-		_logger.LogDebug("Fjerner vare fra database.");
+		_logger.LogInformation("Fjerner vare fra database.");
 
 		await _dataService
 			.Delete(id);
@@ -170,20 +180,20 @@ public class VareController : ControllerBase
 			Priority = CacheItemPriority.High
 		};
 		_memoryCache.Set(vare.ProductId, vare, cacheExpiryOptions);
-		_logger.LogDebug("Gemmer {vare} i cache.", vare);
+		_logger.LogInformation("Gemmer {vare} i cache.", vare);
 	}
 
 	private Vare GetFromCache(string id)
 	{
 		_memoryCache.TryGetValue(id, out Vare vare);
-		_logger.LogDebug("Henter {vare} fra cache.", vare);
+		_logger.LogInformation("Henter {vare} fra cache.", vare);
 		return vare;
 	}
 
 	private void RemoveFromCache(string id)
 	{
 		_memoryCache.Remove(id);
-		_logger.LogDebug("Fjerner vare fra cache.");
+		_logger.LogInformation("Fjerner vare fra cache.");
 	}
 
 	public record VareDTO(ProductCategory Category, string? Title, string? Description, int ShowRoomId, double Valuation, DateTime AuctionStart, string[]? Images);
