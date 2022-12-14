@@ -6,25 +6,14 @@ using BudService.Models;
 
 namespace BudService.Services;
 
-/// <summary>
-/// Consumes messages from the common message queue.
-/// </summary>
 public class MessageService : BackgroundService
 {
     private readonly ILogger<MessageService> _logger;
     private readonly IConnection _connection;
-
     private readonly IDataService _dataservice;
 
     private static readonly string queueName = "bud";
-    private static int _nextId = 1;
 
-    /// <summary>
-    /// Create a worker service that receives a ILogger and 
-    /// environment configuration instance.
-    /// <link>https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0</link>
-    /// </summary>
-    /// <param name="logger"></param>
     public MessageService(ILogger<MessageService> logger, IConfiguration configuration, IDataService dataservice)
     {
         _logger = logger;

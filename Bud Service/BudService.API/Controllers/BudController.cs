@@ -94,8 +94,8 @@ public class BudController : ControllerBase
 
 		Bud bud = new()
 		{
-			AuctionId = BudDTO.AuctionId,
-			BuyerId = BudDTO.BuyerId,
+			AuctionId = BudDTO.AuctionId!,
+			BuyerId = BudDTO.BuyerId!,
 			Date = BudDTO.Date,
 			Bid = BudDTO.Bid,
 		};

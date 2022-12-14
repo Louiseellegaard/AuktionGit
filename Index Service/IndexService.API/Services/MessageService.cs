@@ -8,7 +8,7 @@ namespace IndexService.Services
 {
     public interface IMessageService
     {
-        void Enqueue(Bud bud);
+        void Enqueue(BudDTO bud);
     }
 
     public class MessageService : IMessageService
@@ -33,7 +33,7 @@ namespace IndexService.Services
             }
 
             var factory = new ConnectionFactory
-            { 
+            {
                 HostName = mqhostname,
                 Port = 5672
             };
@@ -45,8 +45,9 @@ namespace IndexService.Services
             _logger.LogInformation("Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}' på port '{factory.Port}'.", mqhostname, factory.Port);
         }
 
-        public void Enqueue(Bud bud)
+        public void Enqueue(BudDTO bud)
         {
+
             // Opretter en channel til at sende beskeder gennem
             var channel = _connection.CreateModel();
             {
@@ -67,7 +68,7 @@ namespace IndexService.Services
                                         body: body);
 
 				// Udskriver til logger, at vi har sendt en booking
-				_logger.LogInformation("[x] Publiseret bud: {bud.BidId}", bud.BidId);
+				_logger.LogInformation("[x] Publiseret bud på auktion: {bud.AuctionId}", bud.AuctionId);
             }
         }
     }

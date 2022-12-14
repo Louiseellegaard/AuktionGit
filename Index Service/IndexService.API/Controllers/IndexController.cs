@@ -10,17 +10,17 @@ namespace IndexService.Controllers;
 [ApiController]
 public class IndexController : ControllerBase
 {
-	private readonly IMessageService _messageService;
 	private readonly ILogger<IndexController> _logger;
 	private readonly IMemoryCache _memoryCache;
 	private readonly IHttpClientFactory? _clientFactory = null;
+	private readonly IMessageService _messageService;
 
 	public IndexController(ILogger<IndexController> logger, IMemoryCache memoryCache, IHttpClientFactory clientFactory, IMessageService messageService)
 	{
-		_messageService = messageService;
-		_clientFactory = clientFactory;
 		_logger = logger;
 		_memoryCache = memoryCache;
+		_clientFactory = clientFactory;
+		_messageService = messageService;
 	}
 
 	// GET: api/index/Auktion
@@ -77,8 +77,7 @@ public class IndexController : ControllerBase
 		// Henter den tilsvarende vare, der knytter sig til auktionen
 		var vare = await client.GetFromJsonAsync<Vare>($"api/vare/{auktion!.ProductId}");
 
-		//var budListe = await client.GetFromJsonAsync<List<Bud>>($"api/bud");
-
+		var budListe = await client.GetFromJsonAsync<List<Bud>>($"api/bud/auction={id}");
 
 		// Opretter et nyt objekt, der 'merger' auktion og varen i ét
 		var auktionFuld = new AuktionFuld()
@@ -91,32 +90,20 @@ public class IndexController : ControllerBase
 			ProductValuation = vare.Valuation,
 			MinimumPrice = auktion.MinimumPrice,
 			BuyerId = auktion.BuyerId,
-			ShowRoomId = vare.ShowRoomId,
+			ShowRoom = (ShowRoom)vare.ShowRoomId,
 			AuctionStart = vare.AuctionStart,
 			AuctionEnd = auktion.AuctionEnd,
 			Images = vare.Images,
-			BidId = "1",
-			Bid = 9999.99999,
-			BidDate = DateTime.UtcNow
+			Bids = budListe
 		};
 		return auktionFuld;
 	}
 
-	// POST api/index/
-	[HttpPost]
-	public void Post(string auctionId, string buyerId, DateTime date, double bid)
+	// POST api/index/Bud
+	[HttpPost("Bud")]
+	public void Post(BudDTO bud)
 	{
-
-		// tilføj logg
-		var bud = new Bud()
-		{
-			AuctionId = auctionId,
-			BuyerId = buyerId,
-			Date = date,
-			Bid = bid
-		};
-
+		Console.WriteLine("Forsøger at poste til kø");
 		_messageService.Enqueue(bud);
 	}
-
 }

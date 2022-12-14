@@ -8,3 +8,12 @@ public class Bud
     public DateTime Date { get; set; }
     public double Bid { get; set; }
 }
+
+public class BudDTO
+{
+	public string AuctionId { get; set; }
+	public string BuyerId { get; set; }
+	public DateTime? Date { get; set; }
+
+	public double Bid { get; set; }
+}

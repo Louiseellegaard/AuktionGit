@@ -1,5 +1,6 @@
 @page "/indexservice/auktion/{auktionId?}"
 @model IndexService.Pages.AuktionPageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
 
@@ -12,6 +13,21 @@
 	<meta name="viewport" content="width=device-width" />
 	<title>Auktion</title>
 	<style>
+		.table {
+						padding: 0.5rem 0.5rem;
+		}
+
+		.table-row {
+						display: table-row;
+						border-style: unset;
+		}
+
+		.table-cell {
+						display: table-cell;
+						padding: 2px;
+						vertical-align: top;
+		}
+
 		.box {
 						display: flex;
 						align-items: center;
@@ -21,6 +37,7 @@
 						display: flex;
 						justify-content: center;
 		}
+
 	</style>
 </head>
 
@@ -56,85 +73,96 @@
 		</div>
 		<hr />
 		<div class="table-responsive">
-			<table class="table table-light table-borderless">
-				<thead>
-				</thead>
+			<table class="table table-borderless">
 				<tbody>
-					@if (Model.Auktion is not null)
+
+					@if (Model.Auktion is null)
 					{
 						<tr>
-							<td>
+							<td id="Column1" style="max-width: 30%; width: 100%;">
 								<div id="ProductImages">
-									@Model.Auktion.Images
+									@(Model.Auktion! is not null
+										? Model.Auktion.Images
+										: "NA")
 								</div>
 							</td>
-							<td>
+							<td id="Column2">
 								<h2>
 									<span id="ProductTitleLabel">
-										@Model.Auktion.ProductTitle
+										@(Model.Auktion! is not null
+											? Model.Auktion.ProductTitle
+											: "Varetitel mangler")
 									</span>
 								</h2>
 								<div class="topContent">
-									<div class="productInfo">
-										<span id="ProductPhraseLabel">
-											Varenummer
-										</span>
-										:
-										<span id="ProductIdLabel">
-											@Model.Auktion.ProductId
-										</span>
+									<div>
+											<div class="productInfo">
+												<div>
+													<span id="ProductPhraseLabel">
+														Varenummer:
+													</span>
+													<span id="ProductIdLabel">
+														@(Model.Auktion! is not null
+															? Model.Auktion.ProductId
+															: "Vareid mangler")
+													</span>
+												</div>
+											</div>
 									</div>
 								</div>
 								<div id="Panel">
 									<table class="table panel">
 										<tbody>
-											<tr>
-												<td>
+											<tr class="table-row">
+												<td class="table-cell">
 													<span id="AuctionEndPhraseLabel">
-														Auktion er fÊrdig
+														Auktion udl√∏ber:
 													</span>
-													:
 													<span id="AuctionEndLabel">
-														@Model.Auktion.AuctionEnd
+														@(Model.Auktion! is not null
+															? Model.Auktion.AuctionEnd
+															: "Mangler")
 													</span>
 												</td>
-												<td>
+												<td class="table-cell">
 													<div id="PriceInfoPanel">
-														<table>
+														<table class="table">
 															<tbody>
-																<tr>
-																	<td>
+																<tr class="table-row">
+																	<td class="table-cell">
 																		<span id="BidLabel">
-																			Bud
+																			Bud:
 																		</span>
-																		:
 																	</td>
-																	<td>
+																	<td class="table-cell">
 																		<span id="BidCurrencyLabel">
 																			DKK
 																		</span>
 																	</td>
-																	<td>
+																	<td class="table-cell">
 																		<span id=BidAmountLabel>
-																			@Model.Auktion.Bid
+																			@(Model.BidPrice > 0
+																				? Model.BidPrice
+																				: "Mangler")
 																		</span>
 																	</td>
 																</tr>
-																<tr>
-																	<td>
+																<tr "table-row">
+																	<td class="table-cell">
 																		<span id="ValuationLabel">
-																			Vurdering
+																			Vurdering:
 																		</span>
-																		:
 																	</td>
-																	<td>
+																	<td class="table-cell">
 																		<span id="ValuationCurrencyLabel">
 																			DKK
 																		</span>
 																	</td>
-																	<td>
+																	<td class="table-cell">
 																		<span id=ValuationAmountLabel>
-																			@Model.Auktion.ProductValuation
+																			@(Model.Auktion! is not null
+																				? Model.Auktion!.ProductValuation
+																				: "Mangler")
 																		</span>
 																	</td>
 																</tr>
@@ -146,26 +174,151 @@
 										</tbody>
 									</table>
 								</div>
-								<div>
-									<h3>
+								<div id="ProductDescription" class="mb-4">
+									<h4>
 										<span id="ProductDescriptionLabel">
 											Beskrivelse
 										</span>
-									</h3>
+									</h4>
 									<span id="ProductDescription">
-										@Model.Auktion.ProductDescription
+										@(Model.Auktion! is not null
+											? Model.Auktion.ProductDescription
+											: "Varebeskrivelse mangler")
 									</span>
 								</div>
 								<div id="BidPanel">
-									<h4>
+									<h5>
 										<span id="BidHeaderPhraseLabel">
-											Angiv bud pÂ varen
+											Angiv bud p√• varen
 										</span>
-									</h4>
-									<div class="bidTableBox">
+									</h5>
+									<div class="bidTableBox" style="background-color: #efe8df">
+										<div id="PlaceBidPanel">
+											<div class="table">
+												<div class="table-row">
+													<div class="table-cell priceHeaderText">
+														<span id="PlaceBidPanelNextBidLabel">
+															Nuv√¶rende bud
+														</span>
+													</div>
+												</div>
+												<div class="table-row">
+													<div class="table-cell nextBidPrice">
+														<span id="PlaceBidPanelNextBidCurrency">
+															DKK
+														</span>
+														<span id="PlaceBidPanelNextBidAmount">
+															@(Model.BidPrice + 100)
+														</span>
+													</div>
+													<div class="table-cell">
+														<span id="BidExplainPhraseLabel">
+															Placer et bud
+														</span>
+													</div>
+												</div>
+											</div>
+											<table class="table">
+												<tbody>
+													<tr class="table-row">
+														<td class="priceHeaderText table-cell">
+															<span id="PlaceBidPanelYourBidLabel">
+																Dit bud
+															</span>
+														</td>
+													</tr>
+													<tr class="table-row">
+
+														<form method="post" class="form-group">
+														<td class="form-group table-cell">
+															<select name="Bid.Bid" class="form-control">
+																	@for (var i = 1; i <= 10; i++)
+																	{
+																	<option value="@(Model.BidPrice + (100 * i))">
+																		DKK @(Model.BidPrice + (100 * i))
+																	</option>
+																	}
+															</select>
+														</td>
+														<td class="form-group table-cell">
+															<select name="Bid.BuyerId" class="form-control">
+																	@foreach (var kunde in Model.Kunder!)
+																	{
+																	<option value="@kunde.CustomerId">
+																			@kunde.Name
+																	</option>
+																	}
+															</select>
+														</td>
+														<td class="form-group table-cell">
+															<button type="submit" class="btn btn-danger w-100">
+																Afgiv bud
+															</button>
+														</td>
+														</form>
+
+													</tr>
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
-								<div id="ShowRoomInfoPanel">
+								<div id="ItemInfoBox">
+									<table class="table">
+										<tbody>
+											<tr class="table-row">
+												<td class="table-cell">
+													<span id="ItemAuctionEndPhraseLabel">
+														Auktionen afsluttes:
+													</span>
+												</td>
+												<td class="table-cell">
+													<span id="ItemAuctionEndLabel">
+														@(Model.Auktion! is not null
+															? Model.Auktion!.AuctionEnd
+															: "NA")
+													</span>
+												</td>
+											</tr>
+											<tr class="table-row">
+												<td class="table-cell">
+													<span id="ItemShowroomPhraseLabel">
+														Showroom:
+													</span>
+												</td>
+												<td class="table-cell">
+													<span id="ItemShowroomLabel">
+														@(Model.Auktion! is not null
+															? Model.Auktion!.ShowRoom
+															: "NA")
+													</span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div id="BidHistoryPanel">
+									<table class="table bidHistory">
+										<thead>
+											<tr class="table-row">
+												<th>Kundenr.</th>
+												<th>Dato</th>
+												<th>Bud</th>
+											</tr>
+										</thead>
+										<tbody>
+											@*
+										@foreach (var bid in Model.Auktion!.Bids!)
+										{
+										<tr class="table-row">
+										<td>@bid.BuyerId</td>
+										<td>@bid.Date</td>
+										<td>@bid.Bid</td>
+										</tr>
+										}
+										*@
+										</tbody>
+									</table>
 								</div>
 							</td>
 						</tr>

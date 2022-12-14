@@ -45,10 +45,11 @@ namespace BudService.Services
 
 		public async Task<List<Bud>> GetByAuction(string id)
 		{
-			// Find alle bud i for en auktion.
+			// Find alle bud for en auktion.
 			return await _db
 				.BudCollection
 				.Find(b => b.AuctionId == id)
+                .SortByDescending(b => b.Bid)
 				.ToListAsync();
 		}
 
