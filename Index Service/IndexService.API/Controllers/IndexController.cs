@@ -99,7 +99,7 @@ public class IndexController : ControllerBase
 		return auktionFuld;
 	}
 
-	// POST api/index/Bud
+	// POST: api/index/Bud
 	[HttpPost("Bud")]
 	public void Post(BudDTO bud)
 	{

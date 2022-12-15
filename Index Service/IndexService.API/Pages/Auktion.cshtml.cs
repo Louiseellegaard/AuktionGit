@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using IndexService.Models;
+using IndexService.Services;
 
 namespace IndexService.Pages
 {
@@ -9,6 +10,7 @@ namespace IndexService.Pages
 	{
 		private readonly ILogger<AuktionPageModel> _logger;
 		private readonly IHttpClientFactory? _clientFactory = null;
+		private readonly IMessageService _messageService;
 
 		[BindProperty(SupportsGet = true)]
 		public string? AuktionId { get; set; }
@@ -20,18 +22,19 @@ namespace IndexService.Pages
 		public double BidPrice { get; set; }
 
 
-		public AuktionPageModel(ILogger<AuktionPageModel> logger, IHttpClientFactory clientFactory)
+		public AuktionPageModel(ILogger<AuktionPageModel> logger, IHttpClientFactory clientFactory, IMessageService messageService)
 		{
 			_logger = logger;
 			_clientFactory = clientFactory;
+			_messageService = messageService;
 		}
 
 
 		public void OnGet()
 		{
-			_logger.LogInformation("Henter auktion '{AuktionId}'.", AuktionId);
-
 			using HttpClient? client = _clientFactory?.CreateClient("gateway");
+
+			_logger.LogInformation("Henter auktion '{AuktionId}'.", AuktionId);
 
 			try
 			{
@@ -39,14 +42,16 @@ namespace IndexService.Pages
 				Auktion = client?.GetFromJsonAsync<AuktionFuld>(
 					$"api/index/auktion/{AuktionId}").Result;
 
-				if (Auktion!.Bids!.Count is 0)
+				var bidCount = Auktion!.Bids!.Count;
+
+				if (bidCount is 0)
 				{
 					_logger.LogInformation("Auktion '{AuktionId}' indeholder ingen bud, sætter pris til mindstepris.", AuktionId);
 					BidPrice = Auktion.MinimumPrice;
 				}
 				else
 				{
-					_logger.LogInformation("Auktion '{AuktionId}' indeholder bud.", AuktionId);
+					_logger.LogInformation("Auktion '{AuktionId}' indeholder {bidCount} bud.", AuktionId, bidCount);
 					BidPrice = Auktion.Bids!.FirstOrDefault()!.Bid;
 				}
 			}
@@ -70,23 +75,26 @@ namespace IndexService.Pages
 		[BindProperty(SupportsGet = true)]
 		public BudDTO? Bid { get; set; }
 
-		public void OnPost()
+		public IActionResult OnPost()
 		{
-			_logger.LogInformation("Forsøger at forbinde til client.");
-
 			using HttpClient? client = _clientFactory?.CreateClient("gateway");
+
+			_logger.LogInformation("Poster bud fra bruger '{BuyerId}' på auction '{AuktionId}'.", Bid!.BuyerId, AuktionId);
 
 			try
 			{
 				Bid!.AuctionId = AuktionId!;
 				Bid.Date = DateTime.UtcNow;
 
-				client?.PostAsJsonAsync("api/index/bud", Bid);
+				_messageService.Enqueue(Bid!);
+
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine("Fejl i OnPost: " + ex.Message);
 			}
+
+			return Redirect($"/indexservice/auktion/{AuktionId}");
 		}
 	}
 }

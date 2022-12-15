@@ -7,11 +7,11 @@
 <html lang="da">
 
 <head>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
 	<title>Auktion</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<style>
 		.table {
 						padding: 0.5rem 0.5rem;
@@ -36,6 +36,10 @@
 		.center {
 						display: flex;
 						justify-content: center;
+		}
+
+		body {
+						font-family: Poppins, Helvetica, sans-serif;
 		}
 
 	</style>
@@ -96,18 +100,18 @@
 								</h2>
 								<div class="topContent">
 									<div>
-											<div class="productInfo">
-												<div>
-													<span id="ProductPhraseLabel">
-														Varenummer:
-													</span>
-													<span id="ProductIdLabel">
-														@(Model.Auktion! is not null
-															? Model.Auktion.ProductId
-															: "Vareid mangler")
-													</span>
-												</div>
+										<div class="productInfo">
+											<div>
+												<span id="ProductPhraseLabel">
+													Varenummer:
+												</span>
+												<span id="ProductIdLabel">
+													@(Model.Auktion! is not null
+														? Model.Auktion.ProductId
+														: "Vareid mangler")
+												</span>
 											</div>
+										</div>
 									</div>
 								</div>
 								<div id="Panel">
@@ -147,7 +151,7 @@
 																		</span>
 																	</td>
 																</tr>
-																<tr "table-row">
+																<tr class="table-row">
 																	<td class="table-cell">
 																		<span id="ValuationLabel">
 																			Vurdering:
@@ -198,7 +202,7 @@
 												<div class="table-row">
 													<div class="table-cell priceHeaderText">
 														<span id="PlaceBidPanelNextBidLabel">
-															Nuværende bud
+															Næste bud
 														</span>
 													</div>
 												</div>
@@ -307,16 +311,14 @@
 											</tr>
 										</thead>
 										<tbody>
-											@*
-										@foreach (var bid in Model.Auktion!.Bids!)
-										{
-										<tr class="table-row">
-										<td>@bid.BuyerId</td>
-										<td>@bid.Date</td>
-										<td>@bid.Bid</td>
-										</tr>
-										}
-										*@
+											@foreach (var bid in Model.Auktion!.Bids!)
+											{
+												<tr class="table-row">
+													<td>@bid.BuyerId</td>
+													<td>@bid.Date</td>
+													<td>@bid.Bid</td>
+												</tr>
+											}
 										</tbody>
 									</table>
 								</div>

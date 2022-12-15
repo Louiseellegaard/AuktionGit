@@ -40,6 +40,8 @@ builder.Services.AddSwaggerGen(c =>
 // Add internal services to the application
 builder.Services.AddSingleton<IDataService, DataService>();
 builder.Services.AddSingleton<IDbContext, DbContext>();
+builder.Services.AddSingleton<IHostedService, MessageService>();
+
 
 var app = builder.Build();
 
