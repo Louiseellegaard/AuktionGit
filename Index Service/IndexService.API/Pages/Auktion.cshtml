@@ -1,6 +1,7 @@
 @page "/indexservice/auktion/{auktionId?}"
-@model IndexService.Pages.AuktionPageModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IndexService.Pages.AuktionPageModel
+@using IndexService.Models
 
 <!DOCTYPE html>
 
@@ -13,6 +14,10 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<style>
+		body {
+						font-family: Poppins, Helvetica, sans-serif;
+		}
+
 		.table {
 						padding: 0.5rem 0.5rem;
 		}
@@ -38,8 +43,8 @@
 						justify-content: center;
 		}
 
-		body {
-						font-family: Poppins, Helvetica, sans-serif;
+		.select {
+						-webkit-appearance: menulist;
 		}
 
 	</style>
@@ -80,21 +85,27 @@
 			<table class="table table-borderless">
 				<tbody>
 
-					@if (Model.Auktion is not null)
+					@if (Model.Auktion is { AuctionId: { } } auktion)
 					{
 						<tr>
 							<td id="Column1" style="max-width: 30%; width: 100%;">
-								<div id="ProductImages">
-									@(Model.Auktion! is not null
-										? Model.Auktion.Images
-										: "NA")
+								<div id="ProductImages" style="width: 100%">
+									@if (auktion.Images is not null)
+									{
+										<img class="w-100"
+											 src="@auktion.Images[0]">
+									}
+									else
+									{
+										<div>Billede mangler</div>
+									}
 								</div>
 							</td>
 							<td id="Column2">
 								<h2>
 									<span id="ProductTitleLabel">
-										@(Model.Auktion! is not null
-											? Model.Auktion.ProductTitle
+										@(auktion.ProductTitle is not null
+											? auktion.ProductTitle
 											: "Varetitel mangler")
 									</span>
 								</h2>
@@ -106,9 +117,9 @@
 													Varenummer:
 												</span>
 												<span id="ProductIdLabel">
-													@(Model.Auktion! is not null
-														? Model.Auktion.ProductId
-														: "Vareid mangler")
+													@(auktion.ProductId is not null
+														? auktion.ProductId
+														: "Varenummer mangler")
 												</span>
 											</div>
 										</div>
@@ -123,8 +134,8 @@
 														Auktion udløber:
 													</span>
 													<span id="AuctionEndLabel">
-														@(Model.Auktion! is not null
-															? Model.Auktion.AuctionEnd
+														@(auktion.AuctionEnd is not null
+															? auktion.AuctionEnd
 															: "Mangler")
 													</span>
 												</td>
@@ -145,7 +156,7 @@
 																	</td>
 																	<td class="table-cell">
 																		<span id=BidAmountLabel>
-																			@(Model.BidPrice > 0
+																			@(Model.BidPrice is not < 0
 																				? Model.BidPrice
 																				: "Mangler")
 																		</span>
@@ -164,8 +175,8 @@
 																	</td>
 																	<td class="table-cell">
 																		<span id=ValuationAmountLabel>
-																			@(Model.Auktion! is not null
-																				? Model.Auktion!.ProductValuation
+																			@(auktion.ProductValuation is not < 0
+																				? auktion.ProductValuation
 																				: "Mangler")
 																		</span>
 																	</td>
@@ -185,8 +196,8 @@
 										</span>
 									</h4>
 									<span id="ProductDescription">
-										@(Model.Auktion! is not null
-											? Model.Auktion.ProductDescription
+										@(auktion.ProductDescription is not null
+											? auktion.ProductDescription
 											: "Varebeskrivelse mangler")
 									</span>
 								</div>
@@ -235,7 +246,7 @@
 
 														<form method="post" class="form-group">
 														<td class="form-group table-cell">
-															<select name="Bid.Bid" class="form-control">
+															<select name="Bid.Bid" class="form-control select">
 																	@for (var i = 1; i <= 10; i++)
 																	{
 																	<option value="@(Model.BidPrice + (100 * i))">
@@ -245,7 +256,7 @@
 															</select>
 														</td>
 														<td class="form-group table-cell">
-															<select name="Bid.BuyerId" class="form-control">
+															<select name="Bid.BuyerId" class="form-control select">
 																	@foreach (var kunde in Model.Kunder!)
 																	{
 																	<option value="@kunde.CustomerId">
@@ -278,8 +289,8 @@
 												</td>
 												<td class="table-cell">
 													<span id="ItemAuctionEndLabel">
-														@(Model.Auktion! is not null
-															? Model.Auktion!.AuctionEnd
+														@(auktion.AuctionEnd is not null
+															? auktion.AuctionEnd
 															: "NA")
 													</span>
 												</td>
@@ -292,8 +303,8 @@
 												</td>
 												<td class="table-cell">
 													<span id="ItemShowroomLabel">
-														@(Model.Auktion! is not null
-															? Model.Auktion!.ShowRoom
+														@(auktion.ShowRoom is not 0
+															? auktion.ShowRoom
 															: "NA")
 													</span>
 												</td>
@@ -311,7 +322,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											@foreach (var bid in Model.Auktion!.Bids!)
+											@foreach (var bid in auktion.Bids!)
 											{
 												<tr class="table-row">
 													<td>@bid.BuyerId</td>

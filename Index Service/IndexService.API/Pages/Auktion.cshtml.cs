@@ -79,12 +79,12 @@ namespace IndexService.Pages
 		{
 			using HttpClient? client = _clientFactory?.CreateClient("gateway");
 
-			_logger.LogInformation("Poster bud fra bruger '{BuyerId}' på auction '{AuktionId}'.", Bid!.BuyerId, AuktionId);
+			_logger.LogInformation("Poster bud fra bruger '{BuyerId}' på auktion '{AuktionId}'.", Bid!.BuyerId, AuktionId);
 
 			try
 			{
 				Bid!.AuctionId = AuktionId!;
-				Bid.Date = DateTime.UtcNow;
+				Bid.Date = DateTime.UtcNow.ToLocalTime();
 
 				_messageService.Enqueue(Bid!);
 
