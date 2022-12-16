@@ -47,12 +47,11 @@ public class IndexController : ControllerBase
 				AuctionId = auktion.AuctionId,
 				AuctionDescription = auktion.Description,
 				ProductId = auktion.ProductId,
+				ProductCategory = vare!.Category,
 				ProductTitle = vare!.Title,
 				ProductDescription = vare.Description,
 				ProductValuation = vare.Valuation,
 				MinimumPrice = auktion.MinimumPrice,
-				//BuyerId = auktion.BuyerId,
-				//ShowRoomId = vare.ShowRoomId,
 				AuctionStart = vare.AuctionStart,
 				AuctionEnd = auktion.AuctionEnd,
 				Images = vare.Images

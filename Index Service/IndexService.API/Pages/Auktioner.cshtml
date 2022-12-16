@@ -61,19 +61,15 @@
 		<hr />
 		<p>Alle auktioner</p>
 		<div class="table-responsive">
-			<table class="table table-light table-hover">
+			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>Auktion</th>
+						<th id="image"></th>
 						<th>Beskrivelse</th>
-						<th>Produkt</th>
-						<th>Produktbeskrivelse</th>
 						<th>Vurderingspris</th>
-						<th>Minimumspris</th>
 						<th>Starttid</th>
 						<th>Sluttid</th>
-						<th>Billeder</th>
-						<th>Byd</th>
+						<th id="bid"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -82,19 +78,33 @@
 						@foreach (var auktion in Model.Auktioner!)
 						{
 							<tr>
-								<td>@auktion.AuctionId</td>
-								<td>@auktion.AuctionDescription</td>
-								<td>@auktion.ProductTitle</td>
-								<td>@auktion.ProductDescription</td>
-								<td>@auktion.ProductValuation</td>
-								<td>@auktion.MinimumPrice</td>
-								<td>@auktion.AuctionStart</td>
-								<td>@auktion.AuctionEnd</td>
-								<td>@auktion.Images</td>
-								<td>
-									<a class="btn btn-primary btn-sm active" role="button"
-										href="auktion/@auktion.AuctionId">
-										Byd
+								<td id="image" class="w-100" style="min-width: 200px; max-width: 20%">
+									@if (auktion.Images is not null)
+									{
+										<img class="w-100"
+											 src="@auktion.Images.FirstOrDefault()">
+									}
+									else
+									{
+										<p>Ingen billeder</p>
+									}
+								</td>
+								<td id="description">
+									<div>
+										<h6>@auktion.ProductTitle</h6>
+										<div>@auktion.ProductDescription</div>
+										<div style="margin-top: 10%">
+											@auktion.ProductCategory
+										</div>
+									</div>
+								</td>
+								<td>DKK @auktion.ProductValuation</td>
+								<td>@auktion.AuctionStart!.Value.ToLocalTime()</td>
+								<td>@auktion.AuctionEnd!.Value.ToLocalTime()</td>
+								<td id="bid" style="vertical-align: middle">
+									<a class="btn btn-primary w-100" role="button"
+									   href="auktion/@auktion.AuctionId">
+										Se mere
 									</a>
 								</td>
 							</tr>
