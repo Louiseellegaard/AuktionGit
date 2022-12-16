@@ -17,6 +17,10 @@ services:
       - ConnectionString=mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority
       - Database=Auktiondb
       - Collection=Bud
+      - BidBrokerHost=rabbitmq
+     depends_on:
+     - rabbitmq
+     restart: unless-stopped
      expose:
      - "80"
 
@@ -64,6 +68,7 @@ services:
      volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./www:/www/data
+     restart: unless-stopped
      depends_on:
       - kundeservice
       - vareservice
