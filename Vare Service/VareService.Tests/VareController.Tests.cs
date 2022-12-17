@@ -10,7 +10,7 @@ using VareService.Services;
 namespace VareService.Tests;
 
 [TestFixture]
-public class VareController_Tests
+public class VareControllerTests
 {
     private ILogger<VareController> _logger;
     private IMemoryCache _memoryCache;
