@@ -4,7 +4,7 @@ using NLog;
 using NLog.Web;
 using AuktionService.Services;
 
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 try
@@ -49,6 +49,9 @@ try
 	builder.Services.AddSingleton<IDataService, DataService>();
 	builder.Services.AddSingleton<IDbContext, DbContext>();
 
+	builder.Logging.ClearProviders();
+	builder.Host.UseNLog();
+
 	var app = builder.Build();
 
 	// Configure the HTTP request pipeline
@@ -76,5 +79,5 @@ catch (Exception ex)
 }
 finally
 {
-	NLog.LogManager.Shutdown();
+	LogManager.Shutdown();
 }

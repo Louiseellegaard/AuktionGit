@@ -4,7 +4,7 @@ using NLog;
 using NLog.Web;
 using BudService.Services;
 
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 try
@@ -50,6 +50,8 @@ try
 	builder.Services.AddSingleton<IDbContext, DbContext>();
 	builder.Services.AddSingleton<IHostedService, MessageService>();
 
+	builder.Logging.ClearProviders();
+	builder.Host.UseNLog();
 
 	var app = builder.Build();
 
@@ -78,5 +80,5 @@ catch (Exception ex)
 }
 finally
 {
-	NLog.LogManager.Shutdown();
+	LogManager.Shutdown();
 }

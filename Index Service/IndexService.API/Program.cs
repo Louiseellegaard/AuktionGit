@@ -47,6 +47,9 @@ try
 
 	builder.Services.AddSingleton<IMessageService, MessageService>();
 
+	builder.Logging.ClearProviders();
+	builder.Host.UseNLog();
+
 	var app = builder.Build();
 
 	// Configure the HTTP request pipeline
