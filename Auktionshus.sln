@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Index Service", "Index Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndexService.API", "Index Service\IndexService.API\IndexService.API.csproj", "{E8088063-DD6B-4AA0-B8D5-64144D158808}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndexService.Tests", "Index Service\IndexService.Tests\IndexService.Tests.csproj", "{1CB67842-7A11-48D3-A2DB-412E9834EB5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8088063-DD6B-4AA0-B8D5-64144D158808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CB67842-7A11-48D3-A2DB-412E9834EB5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CB67842-7A11-48D3-A2DB-412E9834EB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CB67842-7A11-48D3-A2DB-412E9834EB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CB67842-7A11-48D3-A2DB-412E9834EB5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{A8E0766F-509F-424E-BD16-FD4EA58F1A23} = {A11BFC6D-AECC-4EB2-B552-DD8967C98E0C}
 		{12CA23AF-AC92-44F7-AF07-3125BD21076C} = {A11BFC6D-AECC-4EB2-B552-DD8967C98E0C}
 		{E8088063-DD6B-4AA0-B8D5-64144D158808} = {B34C582A-79AF-4F3F-9A11-B7488E39FEBA}
+		{1CB67842-7A11-48D3-A2DB-412E9834EB5A} = {B34C582A-79AF-4F3F-9A11-B7488E39FEBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41124F36-A30F-41FF-8236-0FCD1A40CA04}
