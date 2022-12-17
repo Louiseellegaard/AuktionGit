@@ -2,14 +2,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using IndexService.Models;
 
-namespace MyApp.Namespace
+namespace IndexService.Pages
 {
-	public class AuktionerModel : PageModel
+	public class AuktionerPageModel : PageModel
 	{
 		private readonly IHttpClientFactory? _clientFactory = null;
 		public List<AuktionVare>? Auktioner { get; set; }
 
-		public AuktionerModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
+		public AuktionerPageModel(IHttpClientFactory clientFactory)
+		{
+			_clientFactory = clientFactory;
+		}
 
 		public void OnGet()
 		{
@@ -24,7 +27,7 @@ namespace MyApp.Namespace
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message);
+				Console.WriteLine("Fejl i OnGet af auktioner: " + ex.Message);
 			}
 		}
 	}
