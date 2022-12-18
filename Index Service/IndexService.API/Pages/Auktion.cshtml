@@ -257,10 +257,10 @@
 														</td>
 														<td class="form-group table-cell">
 															<select name="Bid.BuyerId" class="form-control select">
-																	@foreach (var kunde in Model.Kunder!)
+																	@foreach (var bruger in Model.Brugere!)
 																	{
-																	<option value="@kunde.CustomerId">
-																			@kunde.Name
+																	<option value="@bruger.UserId">
+																			@bruger.Name
 																	</option>
 																	}
 															</select>
@@ -316,7 +316,7 @@
 									<table class="table bidHistory">
 										<thead>
 											<tr class="table-row">
-												<th>Kundenr.</th>
+												<th>Brugernr.</th>
 												<th>Dato</th>
 												<th>Bud</th>
 											</tr>

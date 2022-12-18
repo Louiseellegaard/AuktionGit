@@ -1,13 +1,13 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace KundeService.Models;
+namespace BrugerService.Models;
 
-public class Kunde
+public class Bruger
 {
 	[BsonId]
 	[BsonRepresentation(BsonType.ObjectId)]
-	public string CustomerId { get; set; }
+	public string UserId { get; set; }
     public string Name { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
@@ -16,8 +16,8 @@ public class Kunde
     public string Country { get; set; }
     public string Address { get; set; }
 
-    public Kunde()
+    public Bruger()
     {
-        CustomerId = ObjectId.GenerateNewId().ToString();
+        UserId = ObjectId.GenerateNewId().ToString();
     }
 }

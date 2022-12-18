@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	 
     <Company>Auktionshus</Company>
-    <Authors>Wide Pride</Authors>
+    <Authors>Grøn og Olsen</Authors>
     <Copyright>2022</Copyright>
 
     <AssemblyVersion>1.0.1.1</AssemblyVersion>
@@ -18,7 +18,7 @@
     </Description>
   </PropertyGroup>
 	
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'KundeService' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'BrugerService' " />
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.0.5" />
     <PackageReference Include="NLog.Targets.Loki" Version="1.4.5" />

@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using KundeService.Models;
+using BrugerService.Models;
 
 namespace MyApp.Namespace
 {
-	public class KundeListeModel : PageModel
+	public class BrugerListeModel : PageModel
     {
 		private readonly IHttpClientFactory? _clientFactory = null;
-		public List<Kunde>? KundeListe { get; set; }
+		public List<Bruger>? BrugerListe { get; set; }
 
-		public KundeListeModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
+		public BrugerListeModel(IHttpClientFactory clientFactory) => _clientFactory = clientFactory;
 
 		public void OnGet()
 		{
@@ -16,9 +16,9 @@ namespace MyApp.Namespace
 
 			try
 			{
-				// Henter kundeliste
-				KundeListe = client?.GetFromJsonAsync<List<Kunde>>(
-					"api/kunde").Result;
+				// Henter brugerliste
+				BrugerListe = client?.GetFromJsonAsync<List<Bruger>>(
+					"api/bruger").Result;
 
 			}
 			catch (Exception ex)

@@ -17,7 +17,7 @@ namespace IndexService.Pages
 
 
 		public AuktionFuld? Auktion { get; set; }
-		public List<Kunde>? Kunder { get; set; }
+		public List<Bruger>? Brugere { get; set; }
 
 		public double BidPrice { get; set; }
 
@@ -62,13 +62,13 @@ namespace IndexService.Pages
 
 			try
 			{
-				// Henter kunder
-				Kunder = client?.GetFromJsonAsync<List<Kunde>>(
-					$"api/kunde").Result;
+				// Henter brugere
+				Brugere = client?.GetFromJsonAsync<List<Bruger>>(
+					$"api/bruger").Result;
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine("Fejl i OnGet af kunder: " + ex.Message);
+				Console.WriteLine("Fejl i OnGet af brugere: " + ex.Message);
 			}
 		}
 

@@ -2,7 +2,7 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Web;
-using KundeService.Services;
+using BrugerService.Services;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -40,7 +40,7 @@ try
 	{
 		c.SwaggerDoc("v1", new OpenApiInfo
 		{
-			Title = "Kunde Service",
+			Title = "Bruger Service",
 			Version = "v1"
 		});
 	});
@@ -58,7 +58,7 @@ try
 	app.UseSwagger();
 	app.UseSwaggerUI(c =>
 	{
-		c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kunde Service");
+		c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bruger Service");
 	});
 
 	app.UseHttpsRedirection();

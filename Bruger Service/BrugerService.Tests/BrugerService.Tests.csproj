@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KundeService.API\KundeService.API.csproj" />
+    <ProjectReference Include="..\BrugerService.API\BrugerService.API.csproj" />
   </ItemGroup>
 
 </Project>

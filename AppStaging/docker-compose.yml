@@ -24,13 +24,13 @@ services:
      expose:
      - "80"
 
- kundeservice:
-     image: louiseellegaard/kundeapi:latest-dev
-     hostname: kundeservice
+ brugerservice:
+     image: louiseellegaard/brugerapi:latest-dev
+     hostname: brugerservice
      environment:
       - ConnectionString=mongodb+srv://louisedb:louisedb123@auktionshusdb.upg5v0d.mongodb.net/?retryWrites=true&w=majority
       - Database=Auktiondb
-      - Collection=Kunde
+      - Collection=Bruger
      expose:
      - "80"
 
@@ -69,12 +69,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./www:/www/data
      restart: unless-stopped
-     depends_on:
-      - kundeservice
-      - vareservice
-      - budservice
-      - auktionservice
-      - indexservice
      ports:
       - "4000:4000"
 

@@ -1,19 +1,19 @@
 ﻿using MongoDB.Driver;
 
-using KundeService.Models;
+using BrugerService.Models;
 
-namespace KundeService.Services
+namespace BrugerService.Services
 {
 	public interface IDbContext
 	{
-		IMongoCollection<Kunde> KundeCollection { get; }
+		IMongoCollection<Bruger> BrugerCollection { get; }
 	}
 
 	public class DbContext : IDbContext
 	{
 		private ILogger<DbContext> _logger;
 		private IConfiguration _config;
-		public IMongoCollection<Kunde> KundeCollection { get; }
+		public IMongoCollection<Bruger> BrugerCollection { get; }
 
 		public DbContext(ILogger<DbContext> logger, IConfiguration config)
 		{
@@ -23,17 +23,17 @@ namespace KundeService.Services
 			// Henter ConnectionString fra environment i 'docker-compose.yml'-filen
 			var _connectionString = _config["ConnectionString"];
 
-            // Opretter en 'MongoClient' med forbindelse til MongoDB Atlas
-            var _mongoClient = new MongoClient(_connectionString);
+			// Opretter en 'MongoClient' med forbindelse til MongoDB Atlas
+			var _mongoClient = new MongoClient(_connectionString);
 
 			// Henter database fra environment i docker-compose
 			var _mongoDatabase = _mongoClient.GetDatabase(_config["Database"]);
 
 			// Henter collection fra environment i docker-compose
-			KundeCollection = _mongoDatabase.GetCollection<Kunde>(_config["Collection"]);
+			BrugerCollection = _mongoDatabase.GetCollection<Bruger>(_config["Collection"]);
 
 			_logger.LogInformation("Forbundet til database {database}", _mongoDatabase.DatabaseNamespace.DatabaseName);
-			_logger.LogInformation("Benytter collection {collection}", KundeCollection.CollectionNamespace.CollectionName);
+			_logger.LogInformation("Benytter collection {collection}", BrugerCollection.CollectionNamespace.CollectionName);
 		}
 	}
 }

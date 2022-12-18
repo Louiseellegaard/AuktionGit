@@ -1,4 +1,4 @@
-namespace KundeService.Tests;
+namespace BrugerService.Tests;
 
 public class Tests
 {
