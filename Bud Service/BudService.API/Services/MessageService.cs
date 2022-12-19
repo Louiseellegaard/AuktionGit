@@ -15,57 +15,40 @@ public class MessageService : BackgroundService
 
 	private static readonly string queueName = "bids";
 
-	//private static readonly int retryCount = 3;
-	//private static readonly TimeSpan delay = TimeSpan.FromSeconds(5);
-
 	public MessageService(ILogger<MessageService> logger, IDataService dataService, IConfiguration configuration)
 	{
 		_logger = logger;
 		_dataService = dataService;
 
-		var mqhostname = configuration["BidBrokerHost"];
+        var mqhostname = configuration["queue_hostname"];
+		var mqport = configuration["queue_port"];
 
-		// Hvis mphostname er tom, så falder vi tilbage på localhost.
+		// Hvis mphostname er tom, så falder vi tilbage på 'localhost'.
 		// Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
 		if (string.IsNullOrEmpty(mqhostname))
 		{
-			_logger.LogInformation("Kan ikke hente 'hostname' fra miljø.");
-			mqhostname = "localhost";
+            _logger.LogInformation("Kan ikke hente 'hostname' fra miljø.");
+            mqhostname = "localhost";
 		}
+
+		// Hvis 'mqport' er tom, så falder vi tilbage på '5672'.
+        if (string.IsNullOrEmpty(mqport))
+        {
+            _logger.LogInformation("Kan ikke hente 'port' fra miljø.");
+            mqport = 5672;
+        }
 
 		var factory = new ConnectionFactory()
 		{
 			HostName = mqhostname,
-			Port = 5672
+			Port = mqport
 		};
 
-		_logger.LogInformation("Forsøger at oprette forbindelse til hostname '{mqhostname}' på port '{factory.Port}'.", mqhostname, factory.Port);
+        _logger.LogInformation("Forsøger at oprette forbindelse til hostname '{factory.HostName}' på port '{factory.Port}'.", factory.HostName, factory.Port);
 
-		//// Retry-pattern start 
-		//for (; ; )
-		//{
-		//	int currentRetry = 0;
+        _connection = factory.CreateConnection();
 
-		//	try
-		//	{
-				// Call external service.
-				_connection = factory.CreateConnection();
-
-				_logger.LogInformation("Har oprettet forbindelse til RabbitMQ gennem hostname '{mqhostname}' på port '{factory.Port}'.", mqhostname, factory.Port);
-			//}
-			//catch (Exception ex)
-			//{
-			//	_logger.LogTrace("Kunne ikke oprette forbindelse {ex}", ex.Message);
-
-			//	currentRetry++;
-			//	if (currentRetry >= retryCount || !IsTransient(ex))
-			//	{
-			//		_logger.LogCritical("{es}", ex.Message);
-			//	}
-			//}
-			//Task.Delay(delay);
-		//}
-		// Retry-pattern end
+        _logger.LogInformation("Har oprettet forbindelse til RabbitMQ gennem hostname '{factory.HostName}' på port '{factory.Port}'.", mqhostname, factory.Port);
 	}
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -114,10 +97,4 @@ public class MessageService : BackgroundService
 		}
 	}
 
-
-	//private bool IsTransient(Exception ex)
-	//{
-	//	_logger.LogDebug("Checking if exception {ex} is transient", ex.GetType().ToString());
-	//	return true;
-	//}
 }
