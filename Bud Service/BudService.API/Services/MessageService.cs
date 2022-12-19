@@ -20,28 +20,20 @@ public class MessageService : BackgroundService
 		_logger = logger;
 		_dataService = dataService;
 
-        var mqhostname = configuration["queue_hostname"];
-		var mqport = configuration["queue_port"];
+		var mqhostname = configuration["queue_hostname"];
 
 		// Hvis mphostname er tom, så falder vi tilbage på 'localhost'.
 		// Dette er "dårlig" fejlhåndtering, og er den hurtige løsning.
 		if (string.IsNullOrEmpty(mqhostname))
 		{
-            _logger.LogInformation("Kan ikke hente 'hostname' fra miljø.");
-            mqhostname = "localhost";
+			_logger.LogInformation("Kan ikke hente 'hostname' fra miljø.");
+			mqhostname = "localhost";
 		}
-
-		// Hvis 'mqport' er tom, så falder vi tilbage på '5672'.
-        if (string.IsNullOrEmpty(mqport))
-        {
-            _logger.LogInformation("Kan ikke hente 'port' fra miljø.");
-            mqport = 5672;
-        }
 
 		var factory = new ConnectionFactory()
 		{
 			HostName = mqhostname,
-			Port = mqport
+			Port = 5672
 		};
 
         _logger.LogInformation("Forsøger at oprette forbindelse til hostname '{factory.HostName}' på port '{factory.Port}'.", factory.HostName, factory.Port);
