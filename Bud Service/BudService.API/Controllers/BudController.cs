@@ -54,7 +54,7 @@ public class BudController : ControllerBase
 	[HttpGet("{id}", Name = "Get")]
 	public async Task<ActionResult<Bud>> Get(string id)
 	{
-		_logger.LogDebug("Leder efter bu dmed id: {id}.", id);
+		_logger.LogDebug("Leder efter bud med id: {id}.", id);
 
 		var bud = GetFromCache(id);
 
@@ -125,7 +125,7 @@ public class BudController : ControllerBase
 			bud.Date = BudDTO.Date;
 			bud.Bid = BudDTO.Bid;
 
-		_logger.LogDebug("Opdaterer bud med nye værdier.");
+		_logger.LogDebug("Opdaterer bud med nye vï¿½rdier.");
 
 		await _dataService
 			.Update(id, bud);

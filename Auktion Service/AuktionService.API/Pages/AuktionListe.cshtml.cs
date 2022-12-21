@@ -1,23 +1,27 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using AuktionService.Models;
 using System.Text.Json;
 using System;
+using AuktionService.Models;
 
 namespace MyApp.Namespace
 {
 	public class AuktionListeModel : PageModel
 	{
+		private readonly ILogger<AuktionListeModel> _logger;
 		private readonly IHttpClientFactory? _clientFactory = null;
 		public List<Auktion>? AuktionListe { get; set; }
 
-		public AuktionListeModel(IHttpClientFactory clientFactory)
+		public AuktionListeModel(ILogger<AuktionListeModel> logger, IHttpClientFactory clientFactory)
 		{
+            _logger = logger;
 			_clientFactory = clientFactory;
 		}
 
 		public async Task OnGetAsync()
 		{
-			using HttpClient? client = _clientFactory?.CreateClient("gateway")!;
+			using HttpClient? client = _clientFactory?.CreateClient("gateway");
+
+			_logger.LogInformation("Forsøger at hente liste med auktioner");
 
 			try
 			{
@@ -26,7 +30,7 @@ namespace MyApp.Namespace
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message);
+				Console.WriteLine("Fejl i OnGet af Auktioner", ex.Message);
 			}
 
 		}

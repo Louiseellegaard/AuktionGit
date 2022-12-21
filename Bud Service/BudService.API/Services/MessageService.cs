@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using BudService.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BudService.Services;
 

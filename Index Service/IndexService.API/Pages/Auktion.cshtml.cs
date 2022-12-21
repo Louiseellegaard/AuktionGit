@@ -22,12 +22,12 @@ namespace IndexService.Pages
 		public double BidPrice { get; set; }
 
 
-		public AuktionPageModel(ILogger<AuktionPageModel> logger, IHttpClientFactory clientFactory, IMessageService messageService)
-		{
-			_logger = logger;
-			_clientFactory = clientFactory;
-			_messageService = messageService;
-		}
+        public AuktionPageModel(ILogger<AuktionPageModel> logger, IHttpClientFactory clientFactory, IMessageService messageService)
+        {
+            _logger = logger;
+            _clientFactory = clientFactory;
+            _messageService = messageService;
+        }
 
 
 		public void OnGet()
@@ -42,17 +42,15 @@ namespace IndexService.Pages
 				Auktion = client?.GetFromJsonAsync<AuktionFuld>(
 					$"api/index/auktion/{AuktionId}").Result;
 
-				var bidCount = Auktion!.Bids!.Count;
-
-				if (bidCount is 0)
+				if (Auktion!.Bids!.Count is 0)
 				{
 					_logger.LogInformation("Auktion '{AuktionId}' indeholder ingen bud, sætter pris til mindstepris.", AuktionId);
 					BidPrice = Auktion.MinimumPrice;
 				}
 				else
 				{
-					_logger.LogInformation("Auktion '{AuktionId}' indeholder {bidCount} bud.", AuktionId, bidCount);
-					BidPrice = Auktion.Bids!.FirstOrDefault()!.Bid;
+					_logger.LogInformation("Auktion '{AuktionId}' indeholder bud.", AuktionId);
+					BidPrice = Auktion.Bids[0].Bid;
 				}
 			}
 			catch (Exception ex)
@@ -75,26 +73,22 @@ namespace IndexService.Pages
 		[BindProperty(SupportsGet = true)]
 		public BudDTO? Bid { get; set; }
 
-		public IActionResult OnPost()
-		{
-			using HttpClient? client = _clientFactory?.CreateClient("gateway");
+        public IActionResult OnPost()
+        {
+            _logger.LogInformation("Poster bud fra bruger '{BuyerId}' på auktion '{AuktionId}'.", Bid!.BuyerId, AuktionId);
 
-			_logger.LogInformation("Poster bud fra bruger '{BuyerId}' på auktion '{AuktionId}'.", Bid!.BuyerId, AuktionId);
-
-			try
-			{
-				Bid!.AuctionId = AuktionId!;
-				Bid.Date = DateTime.UtcNow.ToLocalTime();
-
-				_messageService.Enqueue(Bid!);
-
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("Fejl i OnPost: " + ex.Message);
-			}
+            try
+            {
+                Bid.AuctionId = AuktionId!;
+                Bid.Date = DateTime.UtcNow.ToLocalTime();
+                _messageService.Enqueue(Bid!);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl i OnPost af bud: " + ex.Message);
+            }
 
 			return Redirect($"/indexservice/auktion/{AuktionId}");
-		}
+        }
 	}
 }

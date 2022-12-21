@@ -1,5 +1,5 @@
-@page "/auktionservice/liste"
-@model MyApp.Namespace.AuktionListeModel
+@page "/budservice/liste"
+@model MyApp.Namespace.BudListeModel
 
 <!DOCTYPE html>
 
@@ -9,7 +9,7 @@
 		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
-	<title>Auktioner</title>
+	<title>Bud</title>
 	<style>
 		table {
 						border-collapse: collapse;
@@ -58,34 +58,32 @@
 						  fill="#3b6af9" />
 				</svg>
 			</a>
-			<h1>Auktioner</h1>
+			<h1>Budd</h1>
 		</div>
 		<hr />
-		<p>Her kommer en tabel med auktioner</p>
+		<p>Her kommer en tabel med bud</p>
 
 		<table>
 			<thead>
 				<tr>
+					<th>Bud id</th>
 					<th>Auktion id</th>
-					<th>Auktion</th>
 					<th>Bruger id</th>
-					<th>Beskrivelse</th>
-					<th>Hammerslag</th>
-					<th>Minimumspris</th>
+					<th>Dato</th>
+					<th>Bud</th>
 				</tr>
 			</thead>
 			<tbody>
-				@if (Model.AuktionListe! is not null)
+				@if (Model.BudListe! is not null)
 				{
-					@foreach (var auktion in Model.AuktionListe!)
+					@foreach (var bud in Model.BudListe!)
 					{
 						<tr>
-							<td>@auktion.AuctionId</td>
-							<td>@auktion.ProductId</td>
-							<td>@auktion.BuyerId</td>
-							<td>@auktion.Description</td>
-							<td>@auktion.AuctionEnd</td>
-							<td>@auktion.MinimumPrice</td>
+							<td>@bud.BidId</td>
+							<td>@bud.AuctionId</td>
+							<td>@bud.BuyerId</td>
+							<td>@bud.Date</td>
+							<td>@bud.Bid</td>
 						</tr>
 					}
 				}
