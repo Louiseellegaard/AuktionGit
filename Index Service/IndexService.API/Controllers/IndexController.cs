@@ -29,16 +29,20 @@ public class IndexController : ControllerBase
 	{
 		using HttpClient? client = _clientFactory?.CreateClient("gateway")!;
 
-		// Laver og instansierer en tom liste, som vi skal bruge til at gemme 'AuktionFuld'-objekter i
+		// Laver og instantierer en tom liste, som vi skal bruge til at gemme 'AuktionFuld'-objekter i.
 		List<AuktionVare> auktionVareListe = new();
 
-		// Laver en liste over alle auktioner
+		_logger.LogDebug("Henter liste over alle auktioner.");
+
+		// Laver en liste over alle auktioner.
 		var auktionListe = await client.GetFromJsonAsync<List<Auktion>>("api/auktion");
 
-		// Foreach-loop, der løber gennem listen med auktioner
+		_logger.LogDebug("Henter varen til hver auktion.");
+
+		// Foreach-loop, der løber gennem listen med auktioner.
 		foreach (var auktion in auktionListe!)
 		{
-			// Henter den tilsvarende vare, der knytter sig til den gældende auktion
+			// Henter den tilsvarende vare, der knytter sig til den gældende auktion.
 			var vare = await client.GetFromJsonAsync<Vare>($"api/vare/{auktion.ProductId}");
 
 			// Opretter et nyt objekt, der 'merger' auktion og varen i ét
@@ -70,12 +74,17 @@ public class IndexController : ControllerBase
 	{
 		using HttpClient? client = _clientFactory?.CreateClient("gateway")!;
 
-		// Henter auktion
+		_logger.LogDebug("Leder efter auktion med id: {id}.", id);
+
+		// Henter auktion.
 		var auktion = await client.GetFromJsonAsync<Auktion>($"api/auktion/{id}");
 
-		// Henter den tilsvarende vare, der knytter sig til auktionen
+		_logger.LogDebug("Leder efter vare med id: {id}.", auktion!.ProductId);
+		// Henter den tilsvarende vare, der knytter sig til auktionen.
 		var vare = await client.GetFromJsonAsync<Vare>($"api/vare/{auktion!.ProductId}");
 
+		_logger.LogDebug("Leder efter bud på vare {id}.", vare!.Title);
+		// Henter alle budene på varen.
 		var budListe = await client.GetFromJsonAsync<List<Bud>>($"api/bud/auction={id}");
 
 		// Opretter et nyt objekt, der 'merger' auktion og varen i ét
@@ -95,6 +104,8 @@ public class IndexController : ControllerBase
 			Images = vare.Images,
 			Bids = budListe
 		};
+		_logger.LogDebug("Get af auktion var en succes.");
+
 		return auktionFuld;
 	}
 
@@ -102,7 +113,8 @@ public class IndexController : ControllerBase
 	[HttpPost("Bud")]
 	public void Post(BudDTO bud)
 	{
-		Console.WriteLine("Forsøger at poste til kø");
+		_logger.LogDebug("Forsøger at poste bud til kø.");
+
 		_messageService.Enqueue(bud);
 	}
 }
